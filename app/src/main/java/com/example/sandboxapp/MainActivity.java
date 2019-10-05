@@ -35,7 +35,7 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
 
     AppIntro				m_app;
     ViewIntro			    m_viewIntro;
-    //ViewGame				m_viewGame;
+    ViewGame				m_viewGame;
 
 
     // screen dim
@@ -112,10 +112,10 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
         }
         if (m_viewCur == VIEW_GAME)
         {
-            //m_viewGame = new ViewGame(this);
+            m_viewGame = new ViewGame(this);
             Log.d("THREE", "Switch to m_viewGame" );
-            //setContentView(m_viewGame);
-            //m_viewGame.start();
+            setContentView(m_viewGame);
+            m_viewGame.start();
         }
     }
 
@@ -153,7 +153,7 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
         if (m_viewCur == VIEW_INTRO)
             return m_viewIntro.onTouch( x, y, touchType);
         if (m_viewCur == VIEW_GAME)
-            ;//return m_viewGame.onTouch(x, y, touchType);
+            return m_viewGame.onTouch(x, y, touchType);
         {
         }
         return true;
@@ -182,7 +182,7 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
         if (m_viewCur == VIEW_INTRO)
             m_viewIntro.start();
         if (m_viewCur == VIEW_GAME)
-            ;//m_viewGame.start();
+            m_viewGame.start();
         //Log.d("THREE", "App onResume");
     }
     protected void onPause()
@@ -191,7 +191,7 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
         if (m_viewCur == VIEW_INTRO)
             m_viewIntro.stop();
         if (m_viewCur == VIEW_GAME)
-            ;//m_viewGame.onPause();
+            m_viewGame.onPause();
 
         // complete system
         super.onPause();
@@ -200,7 +200,7 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
     protected void onDestroy()
     {
         if (m_viewCur == VIEW_GAME)
-            ;//m_viewGame.onDestroy();
+            m_viewGame.onDestroy();
         super.onDestroy();
         //Log.d("THREE", "App onDestroy");
     }
