@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 
+import com.example.sandboxapp.game.Render;
+
 //****************************************************************
 //class RefreshHandler
 //****************************************************************
@@ -39,12 +41,15 @@ public class ViewGame extends View {
     private boolean			 m_active   = false;
     private Paint            m_paint    = new Paint();
 
+    public  Render   m_render;
+
     private static final int UPDATE_TIME_MS = 30;
 
     public ViewGame(MainActivity app)
     {
         super(app);
         m_app = app;
+        m_render = new Render(app);
         m_refresh = new RefreshHandler(this);
         setOnTouchListener(app);
 
@@ -82,7 +87,7 @@ public class ViewGame extends View {
 
     public void onDraw(Canvas canvas)
     {
-        canvas.drawRect(200, 150, 400, 200, m_paint);
+        m_render.Draw(canvas);
     }
 
 }
