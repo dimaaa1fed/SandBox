@@ -1,5 +1,7 @@
 package com.example.sandboxapp;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -34,7 +36,9 @@ public class ViewGame extends View {
 
     private MainActivity     m_app;
     private RefreshHandler   m_refresh;
-    private boolean			 m_active       = false;
+    private boolean			 m_active   = false;
+    private Paint            m_paint    = new Paint();
+
     private static final int UPDATE_TIME_MS = 30;
 
     public ViewGame(MainActivity app)
@@ -75,4 +79,10 @@ public class ViewGame extends View {
     public void onPause()
     {
     }
+
+    public void onDraw(Canvas canvas)
+    {
+        canvas.drawRect(200, 150, 400, 200, m_paint);
+    }
+
 }
