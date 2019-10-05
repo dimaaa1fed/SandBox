@@ -32,12 +32,14 @@ public class RenderBox {
     private Rect GetRect(Canvas canvas) {
         Rect rect = new Rect();
 
-        int left      = (int)((m_geom.GetPos().x - m_geom.GetWidth() / 2)  * canvas.getWidth());
-        int top       = (int)((m_geom.GetPos().x + m_geom.GetHeight() / 2) * canvas.getHeight());
-        int right     = (int)((m_geom.GetPos().x + m_geom.GetWidth() / 2)  * canvas.getWidth());
-        int bottom    = (int)((m_geom.GetPos().x - m_geom.GetHeight() / 2) * canvas.getHeight());
+        int left      = canvas.getWidth() / 2 + (int)((m_geom.GetPos().x - m_geom.GetWidth() / 2)  * canvas.getWidth() / 2);
+        int top       = canvas.getHeight() / 2 + (int)((m_geom.GetPos().y + m_geom.GetHeight() / 2) * canvas.getHeight()) / 2;
+        int right     = canvas.getWidth() / 2 + (int)((m_geom.GetPos().x + m_geom.GetWidth() / 2)  * canvas.getWidth()) / 2;
+        int bottom    = canvas.getHeight() / 2 + (int)((m_geom.GetPos().y - m_geom.GetHeight() / 2) * canvas.getHeight()) / 2;
 
         rect.set(left, top, right, bottom);
         return rect;
     }
+
+
 }

@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 
+import com.example.sandboxapp.game.GameScene;
 import com.example.sandboxapp.game.Render;
 
 //****************************************************************
@@ -41,7 +42,9 @@ public class ViewGame extends View {
     private boolean			 m_active   = false;
     private Paint            m_paint    = new Paint();
 
-    public  Render   m_render;
+    // game moduls
+    public  Render    m_render;
+    public  GameScene m_gameScene = new GameScene();
 
     private static final int UPDATE_TIME_MS = 30;
 
@@ -87,7 +90,7 @@ public class ViewGame extends View {
 
     public void onDraw(Canvas canvas)
     {
-        m_render.Draw(canvas);
+        m_render.Draw(canvas, m_gameScene);
     }
 
 }

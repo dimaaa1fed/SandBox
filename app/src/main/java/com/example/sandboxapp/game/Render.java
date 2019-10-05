@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import com.example.sandboxapp.MainActivity;
 import com.example.sandboxapp.R;
 import com.example.sandboxapp.game_objects.Sand;
+import com.example.sandboxapp.math.Vec2f;
 
 public class Render {
 
@@ -35,7 +36,10 @@ public class Render {
         for (int i = 0; i < sand.Size(); i++) {
             sand.At(i).GetRenderBox().Draw(canvas);
         }
+    }
 
+    static Vec2f ToGlobal (Vec2f vec, Canvas canvas) {
+        return new Vec2f(vec.x * canvas.getWidth(), vec.y * canvas.getHeight());
     }
 
 }
