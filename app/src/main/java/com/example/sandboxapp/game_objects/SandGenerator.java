@@ -23,7 +23,7 @@ public class SandGenerator {
             double h = SandParticle.HEIGHT;
             double x = bottomLeft.x + w / 2 + i % iWidth * w;
             double y = bottomLeft.y + h / 2 + i / iHeight * h;
-            sand.Push(new SandParticle(new Vec2d(x, y)));
+            sand.Push(new SandParticle(new Vec2d(x - w, y - h), new Vec2d(x + w, y + h)));
         }
         return sand;
     }

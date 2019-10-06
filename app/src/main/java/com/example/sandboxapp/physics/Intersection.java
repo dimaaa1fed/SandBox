@@ -1,6 +1,7 @@
-package com.example.sandboxapp.game_objects;
+package com.example.sandboxapp.physics;
 
 import com.example.sandboxapp.math.Vec2d;
+import com.example.sandboxapp.physics.GeomBox;
 
 public class Intersection {
 

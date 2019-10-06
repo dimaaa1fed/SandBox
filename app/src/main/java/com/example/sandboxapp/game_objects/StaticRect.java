@@ -15,26 +15,13 @@ public class StaticRect {
 
     public static double STATIC_MASS = 99999999;
 
-    public static Vec2d DEFAULT_POS = new Vec2d(0.0f, 0.0f);
-
-
     private RenderBox m_renderBox;
     private PhysBox   m_physBox;
 
 
-    public StaticRect ()
+    public StaticRect (Vec2d m_min, Vec2d m_max)
     {
-        m_physBox = new PhysBox(DEFAULT_POS, WIDTH, HEIGHT,
-                new Vec2d(0.0f, 0.0f), new Vec2d(0.0f, 0.0f), STATIC_MASS);
-
-        m_renderBox = new RenderBox((GeomBox)m_physBox, Color.YELLOW);
-    }
-
-    public StaticRect (Vec2d pos)
-    {
-        m_physBox = new PhysBox(pos, WIDTH, HEIGHT,
-                new Vec2d(0.0f, 0.0f), new Vec2d(0.0f, 0.0f), STATIC_MASS);
-
+        m_physBox = new PhysBox(m_min, m_max, STATIC_MASS);
         m_renderBox = new RenderBox((GeomBox)m_physBox, Color.BLACK);
     }
 

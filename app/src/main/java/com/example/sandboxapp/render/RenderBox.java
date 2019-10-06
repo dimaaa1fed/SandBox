@@ -1,7 +1,6 @@
 package com.example.sandboxapp.render;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
@@ -18,8 +17,6 @@ public class RenderBox {
     }
 
     public void Draw (Canvas canvas) {
-
-
         Rect rect = GetRect(canvas);
 
         Paint yellowPaint = new Paint();
@@ -32,10 +29,17 @@ public class RenderBox {
     private Rect GetRect(Canvas canvas) {
         Rect rect = new Rect();
 
-        int left      = canvas.getWidth() / 2 + (int)((m_geom.GetPos().x - m_geom.GetWidth() / 2)  * canvas.getWidth() / 2);
-        int top       = canvas.getWidth() / 2 + (int)((m_geom.GetPos().y + m_geom.GetHeight() / 2) * canvas.getWidth()) / 2;
-        int right     = canvas.getWidth() / 2 + (int)((m_geom.GetPos().x + m_geom.GetWidth() / 2)  * canvas.getWidth()) / 2;
-        int bottom    = canvas.getWidth() / 2 + (int)((m_geom.GetPos().y - m_geom.GetHeight() / 2) * canvas.getWidth()) / 2;
+        /*
+         * @param left   The X coordinate of the left side of the rectangle
+         * @param top    The Y coordinate of the top of the rectangle
+         * @param right  The X coordinate of the right side of the rectangle
+         * @param bottom The Y coordinate of the bottom of the rectangle
+         */
+
+        int left      = canvas.getWidth() / 2 + (int)(m_geom.getLeftBottom().x * canvas.getWidth() / 2);
+        int top       = canvas.getWidth() / 2 + (int)(m_geom.getLeftUp().y * canvas.getWidth() / 2);
+        int right     = canvas.getWidth() / 2 + (int)(m_geom.getRightBottom().x  * canvas.getWidth() / 2);
+        int bottom    = canvas.getWidth() / 2 + (int)(m_geom.getRightBottom().y * canvas.getWidth() / 2);
 
         rect.set(left, top, right, bottom);
         return rect;

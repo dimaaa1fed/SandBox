@@ -4,28 +4,39 @@ import com.example.sandboxapp.math.Vec2d;
 
 public class GeomBox {
 
-    private double m_width;
-    private double m_height;
+    private Vec2d m_min;
+    private Vec2d m_max;
 
-    private Vec2d m_pos;
-    
-    public GeomBox (Vec2d pos, double width, double height)
-    {
-        m_pos = pos;
-        m_width = width;
-        m_height = height;
+    public GeomBox(Vec2d min, Vec2d max) {
+        this.m_min = min;
+        this.m_max = max;
     }
 
-    public double GetWidth () {
-        return m_width;
+    public Vec2d getMin() {
+        return m_min;
     }
 
-    public double GetHeight () {
-        return m_height;
+    public Vec2d getMax() {
+        return m_max;
     }
 
-    public Vec2d GetPos () {
-        return m_pos;
+    public Vec2d getCenter () {
+        return new Vec2d((m_min.x + m_max.x) / 2, (m_min.y + m_max.y) / 2);
     }
 
+    public Vec2d getLeftBottom () {
+        return m_min.clone();
+    }
+
+    public Vec2d getLeftUp () {
+        return new Vec2d(m_min.x, m_max.y);
+    }
+
+    public Vec2d getRightUp () {
+        return new Vec2d(m_max.x, m_max.y);
+    }
+
+    public Vec2d getRightBottom () {
+        return new Vec2d(m_max.x, m_min.y);
+    }
 }
