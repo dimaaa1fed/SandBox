@@ -9,8 +9,8 @@ import com.example.sandboxapp.render.RenderBox;
 
 
 public class SandParticle {
-    public static double HEIGHT = 0.05;
-    public static double WIDTH = 0.05;
+    public static double HEIGHT = 0.02;
+    public static double WIDTH = 0.02;
 
     public static double SAND_MASS = 1;
 

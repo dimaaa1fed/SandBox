@@ -2,7 +2,6 @@ package com.example.sandboxapp.game;
 
 import com.example.sandboxapp.game_objects.Sand;
 import com.example.sandboxapp.game_objects.SandGenerator;
-import com.example.sandboxapp.game_objects.SandParticle;
 import com.example.sandboxapp.game_objects.StaticObjsGenerator;
 import com.example.sandboxapp.game_objects.StaticRect;
 import com.example.sandboxapp.math.Vec2d;
@@ -14,7 +13,6 @@ public class GameScene {
     private ArrayList<StaticRect> m_walls;
 
     public GameScene () {
-        // TODO: Calculate
         Vec2d leftBottomWall = new Vec2d((float) (-0.9f / Math.sqrt(2)), (float) (-0.9f/ Math.sqrt(2)));
         Vec2d rightTopWall = new Vec2d((float) (0.9f/ Math.sqrt(2)), (float) (0.9f/ Math.sqrt(2)));
 

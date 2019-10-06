@@ -37,18 +37,13 @@ public class Render {
         // draw sand
         Sand sand = scene.GetSand();
         for (int i = 0; i < sand.Size(); i++) {
-            sand.At(i).GetRenderBox().Draw(canvas);
+            sand.At(i).GetRenderBox().Draw(canvas, rotAngle);
         }
 
         // draw walls
         ArrayList<StaticRect> walls = scene.GetWalls();
         for (int i = 0; i < walls.size(); i++) {
-            walls.get(i).GetRenderBox().Draw(canvas);
+            walls.get(i).GetRenderBox().Draw(canvas, rotAngle);
         }
     }
-
-    static Vec2d ToGlobal (Vec2d vec, Canvas canvas) {
-        return new Vec2d(vec.x * canvas.getWidth(), vec.y * canvas.getHeight());
-    }
-
 }

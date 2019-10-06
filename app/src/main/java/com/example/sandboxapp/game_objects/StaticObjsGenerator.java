@@ -17,7 +17,7 @@ public class StaticObjsGenerator {
             double h = StaticRect.HEIGHT;
             double x = bottomLeft.x + w / 2 + i * w;
             double y = bottomLeft.y + h / 2;
-            walls.add(new StaticRect(new Vec2d(x - w, y - h), new Vec2d(x + w, y + h)));
+            walls.add(new StaticRect(new Vec2d(x - w / 2, y - h/ 2), new Vec2d(x + w/ 2, y + h/ 2)));
         }
 
         for (int i = 0; i < iWidth; i++) {
@@ -25,7 +25,7 @@ public class StaticObjsGenerator {
             double h = StaticRect.HEIGHT;
             double x = bottomLeft.x + w / 2 + i * w;
             double y = rightTop.y - h / 2;
-            walls.add(new StaticRect(new Vec2d(x - w, y - h), new Vec2d(x + w, y + h)));
+            walls.add(new StaticRect(new Vec2d(x - w / 2, y - h / 2), new Vec2d(x + w / 2, y + h / 2)));
         }
 
 
@@ -34,7 +34,7 @@ public class StaticObjsGenerator {
             double h = StaticRect.HEIGHT;
             double x = bottomLeft.x + w / 2;
             double y = bottomLeft.y + h / 2 + j * h;
-            walls.add(new StaticRect(new Vec2d(x - w, y - h), new Vec2d(x + w, y + h)));
+            walls.add(new StaticRect(new Vec2d(x - w / 2, y - h / 2), new Vec2d(x + w / 2, y + h / 2)));
         }
 
         for (int j = 0; j < iHeight; j++) {
@@ -42,7 +42,7 @@ public class StaticObjsGenerator {
             double h = StaticRect.HEIGHT;
             double x = rightTop.x - w / 2;
             double y = bottomLeft.y + h / 2 + j * h;
-            walls.add(new StaticRect(new Vec2d(x - w, y - h), new Vec2d(x + w, y + h)));
+            walls.add(new StaticRect(new Vec2d(x - w / 2, y - h / 2), new Vec2d(x + w / 2, y + h / 2)));
         }
 
         return walls;
