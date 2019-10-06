@@ -9,7 +9,10 @@ import android.graphics.Rect;
 import com.example.sandboxapp.MainActivity;
 import com.example.sandboxapp.R;
 import com.example.sandboxapp.game_objects.Sand;
-import com.example.sandboxapp.math.Vec2f;
+import com.example.sandboxapp.game_objects.StaticRect;
+import com.example.sandboxapp.math.Vec2d;
+
+import java.util.ArrayList;
 
 public class Render {
 
@@ -20,7 +23,7 @@ public class Render {
     }
 
 
-    public void Draw (Canvas canvas, GameScene scene) {
+    public void Draw (Canvas canvas, GameScene scene, double rotAngle) {
 
         // draw background
         Rect dest = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -36,10 +39,16 @@ public class Render {
         for (int i = 0; i < sand.Size(); i++) {
             sand.At(i).GetRenderBox().Draw(canvas);
         }
+
+        // draw walls
+        ArrayList<StaticRect> walls = scene.GetWalls();
+        for (int i = 0; i < walls.size(); i++) {
+            walls.get(i).GetRenderBox().Draw(canvas);
+        }
     }
 
-    static Vec2f ToGlobal (Vec2f vec, Canvas canvas) {
-        return new Vec2f(vec.x * canvas.getWidth(), vec.y * canvas.getHeight());
+    static Vec2d ToGlobal (Vec2d vec, Canvas canvas) {
+        return new Vec2d(vec.x * canvas.getWidth(), vec.y * canvas.getHeight());
     }
 
 }

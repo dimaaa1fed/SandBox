@@ -1,13 +1,12 @@
 package com.example.sandboxapp;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Message;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 
-import com.example.sandboxapp.game.GameScene;
-import com.example.sandboxapp.game.Render;
+import com.example.sandboxapp.game.Engine;
 
 //****************************************************************
 //class RefreshHandler
@@ -40,11 +39,8 @@ public class ViewGame extends View {
     private MainActivity     m_app;
     private RefreshHandler   m_refresh;
     private boolean			 m_active   = false;
-    private Paint            m_paint    = new Paint();
 
-    // game moduls
-    public  Render    m_render;
-    public  GameScene m_gameScene = new GameScene();
+    Engine m_engine;
 
     private static final int UPDATE_TIME_MS = 30;
 
@@ -52,7 +48,7 @@ public class ViewGame extends View {
     {
         super(app);
         m_app = app;
-        m_render = new Render(app);
+        m_engine = new Engine(app);
         m_refresh = new RefreshHandler(this);
         setOnTouchListener(app);
 
@@ -76,7 +72,17 @@ public class ViewGame extends View {
 
     public boolean onTouch(int x, int y, int evtType)
     {
-
+        switch (evtType) {
+            case AppIntro.TOUCH_DOWN:
+                m_engine.OnTouchDown(x, y);
+                break;
+            case AppIntro.TOUCH_MOVE:
+                m_engine.OnTouchMove(x, y);
+                break;
+            case AppIntro.TOUCH_UP:
+                m_engine.OnTouchUp(x, y);
+                break;
+        }
         return true;
     }
 
@@ -90,7 +96,7 @@ public class ViewGame extends View {
 
     public void onDraw(Canvas canvas)
     {
-        m_render.Draw(canvas, m_gameScene);
+        m_engine.Render(canvas);
     }
 
 }

@@ -1,14 +1,14 @@
 package com.example.sandboxapp.game_objects;
 
-import com.example.sandboxapp.math.Vec2f;
+import com.example.sandboxapp.math.Vec2d;
 
 
 public class SandGenerator {
 
     //TODO: rewrite this
-    static public Sand Generate(Vec2f bottomLeft, Vec2f rightTop, int size) {
-        int iWidth = (int)((rightTop.x - bottomLeft.x) / SandParticle.WIDTH_WIDTH);
-        int iHeight = (int)((rightTop.y - bottomLeft.y) / SandParticle.WIDTH_HEIGHT);
+    static public Sand Generate(Vec2d bottomLeft, Vec2d rightTop, int size) {
+        int iWidth = (int)((rightTop.x - bottomLeft.x) / SandParticle.WIDTH);
+        int iHeight = (int)((rightTop.y - bottomLeft.y) / SandParticle.HEIGHT);
 
         int totalCapacitySize = iWidth * iHeight;
 
@@ -19,11 +19,11 @@ public class SandGenerator {
 
         Sand sand = new Sand(size);
         for (int i = 0; i < size; i++) {
-            float w = SandParticle.WIDTH_WIDTH;
-            float h = SandParticle.WIDTH_HEIGHT;
-            float x = bottomLeft.x + w / 2 + i % iWidth * w;
-            float y = bottomLeft.y + h / 2 + i / iHeight * h;
-            sand.Push(new SandParticle(new Vec2f(x, y)));
+            double w = SandParticle.WIDTH;
+            double h = SandParticle.HEIGHT;
+            double x = bottomLeft.x + w / 2 + i % iWidth * w;
+            double y = bottomLeft.y + h / 2 + i / iHeight * h;
+            sand.Push(new SandParticle(new Vec2d(x, y)));
         }
         return sand;
     }

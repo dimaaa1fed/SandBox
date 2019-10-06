@@ -104,7 +104,7 @@ public class AppIntro
         m_pathAppleGraft	= new Path();
         m_pathAppleLeaf		= new Path();
 
-        m_point				= new V2d();
+        m_point				= new V2d(0, 0);
         m_renderCounter 	= 0;
         m_paintGreenEmpty	= new Paint();
         m_paintGreenEmpty.setStyle(Style.STROKE);

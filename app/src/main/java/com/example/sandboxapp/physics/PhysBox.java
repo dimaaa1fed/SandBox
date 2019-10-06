@@ -1,15 +1,15 @@
 package com.example.sandboxapp.physics;
 
-import com.example.sandboxapp.math.Vec2f;
+import com.example.sandboxapp.math.Vec2d;
 
 public class PhysBox extends GeomBox {
-    public Vec2f m_velocity;
-    public Vec2f m_acceleration;
+    public Vec2d m_velocity;
+    public Vec2d m_acceleration;
 
-    public float m_mass;
+    public double m_mass;
 
 
-    public PhysBox (Vec2f pos, float width, float height, Vec2f velocity, Vec2f acceleration, float mass)
+    public PhysBox (Vec2d pos, double width, double height, Vec2d velocity, Vec2d acceleration, double mass)
     {
         super(pos, width, height);
 
