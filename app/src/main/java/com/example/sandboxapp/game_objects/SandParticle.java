@@ -27,4 +27,7 @@ public class SandParticle {
     public RenderBox GetRenderBox () {
         return m_renderBox;
     }
+    public PhysBox   GetPhysBox () {
+        return m_physBox;
+    }
 }

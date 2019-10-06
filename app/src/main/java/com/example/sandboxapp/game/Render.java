@@ -10,13 +10,12 @@ import com.example.sandboxapp.MainActivity;
 import com.example.sandboxapp.R;
 import com.example.sandboxapp.game_objects.Sand;
 import com.example.sandboxapp.game_objects.StaticRect;
-import com.example.sandboxapp.math.Vec2d;
 
 import java.util.ArrayList;
 
 public class Render {
 
-    public Bitmap m_bitmapBack;
+    private Bitmap m_bitmapBack;
 
     public Render (MainActivity app) {
         m_bitmapBack = BitmapFactory.decodeResource(app.getResources(), R.drawable.background);

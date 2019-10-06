@@ -10,10 +10,10 @@ import com.example.sandboxapp.render.RenderBox;
 
 public class StaticRect {
 
-    public static double HEIGHT = 0.04;
-    public static double WIDTH = 0.04;
+    public static double HEIGHT = 0.1;
+    public static double WIDTH = 0.1;
 
-    public static double STATIC_MASS = Double.POSITIVE_INFINITY;
+    public static double STATIC_MASS = PhysBox.INFINITE_MASS;
 
     private RenderBox m_renderBox;
     private PhysBox   m_physBox;
@@ -27,5 +27,8 @@ public class StaticRect {
 
     public RenderBox GetRenderBox () {
         return m_renderBox;
+    }
+    public PhysBox   GetPhysBox   () {
+        return m_physBox;
     }
 }

@@ -13,7 +13,7 @@ import com.example.sandboxapp.game.Engine;
 //****************************************************************
 class RefreshHandler extends Handler
 {
-    ViewGame	m_viewGame;
+    private ViewGame	m_viewGame;
 
     public RefreshHandler(ViewGame v)
     {
@@ -96,7 +96,7 @@ public class ViewGame extends View {
 
     public void onDraw(Canvas canvas)
     {
+        m_engine.Update();
         m_engine.Render(canvas);
     }
-
 }
