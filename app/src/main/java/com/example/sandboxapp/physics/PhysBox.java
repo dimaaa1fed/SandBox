@@ -5,7 +5,6 @@ import com.example.sandboxapp.physics.GeomBox;
 import com.example.sandboxapp.math.Vec2d;
 
 public class PhysBox extends GeomBox {
-    public static int      BOX_ID = 0;
     public static double   INFINITE_MASS = 0;
 
     public Vec2d m_velocity;
@@ -19,16 +18,11 @@ public class PhysBox extends GeomBox {
     public double staticFriction = 1;
     public double dynamicFriction = 0.3;
 
-    public int id;
-
     public PhysBox(Vec2d m_min, Vec2d m_max, double m_imass) {
         super(m_min, m_max);
         this.m_velocity = new Vec2d(0, 0);
         this.m_force = new Vec2d(0, 0);
         this.m_imass = m_imass;
-
-        this.id = PhysBox.BOX_ID;
-        PhysBox.BOX_ID++;
     }
 
     public void IntegrateForces (Vec2d gravity, double dt) {

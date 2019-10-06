@@ -5,6 +5,8 @@ import com.example.sandboxapp.game_objects.SandGenerator;
 import com.example.sandboxapp.game_objects.StaticObjsGenerator;
 import com.example.sandboxapp.game_objects.StaticRect;
 import com.example.sandboxapp.math.Vec2d;
+import com.example.sandboxapp.physics.GeomBox;
+import com.example.sandboxapp.physics.PhysBox;
 
 import java.util.ArrayList;
 
@@ -14,11 +16,15 @@ public class GameScene {
 
     private PhysicEngine m_physEngine;
 
+    private GeomBox game_box;
+
     public GameScene (PhysicEngine physicEngine) {
         m_physEngine = physicEngine;
 
         Vec2d leftBottomWall = new Vec2d((float) (-0.9f / Math.sqrt(2)), (float) (-0.9f/ Math.sqrt(2)));
         Vec2d rightTopWall = new Vec2d((float) (0.9f/ Math.sqrt(2)), (float) (0.9f/ Math.sqrt(2)));
+
+        game_box = new GeomBox(leftBottomWall, rightTopWall);
 
         Vec2d leftBottomSand = new Vec2d((float) (-0.9f / Math.sqrt(2)), (float) (-0.9f/ Math.sqrt(2)));
         leftBottomSand.x += StaticRect.WIDTH;
@@ -31,12 +37,12 @@ public class GameScene {
 
         m_walls = StaticObjsGenerator.Generate(leftBottomWall, rightTopWall);
         for (int i = 0; i < m_walls.size(); i++) {
-            m_physEngine.AddPhysBox( m_walls.get(i).GetPhysBox().id, m_walls.get(i).GetPhysBox());
+            m_physEngine.AddPhysBox( m_walls.get(i).GetPhysBox());
         }
 
         m_sand = SandGenerator.Generate(leftBottomSand, rightTopSand, 50);
         for (int i = 0; i < m_sand.Size(); i++) {
-            m_physEngine.AddPhysBox( m_sand.At(i).GetPhysBox().id, m_sand.At(i).GetPhysBox());
+            m_physEngine.AddPhysBox( m_sand.At(i).GetPhysBox());
         }
     }
 
@@ -46,4 +52,7 @@ public class GameScene {
 
     public ArrayList<StaticRect> GetWalls () { return m_walls; }
 
+    public GeomBox getGame_box() {
+        return game_box;
+    }
 }

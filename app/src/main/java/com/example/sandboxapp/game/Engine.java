@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 
 import com.example.sandboxapp.MainActivity;
 import com.example.sandboxapp.math.Vec2d;
+import com.example.sandboxapp.physics.PhysBox;
 
 public class Engine {
     public  Render         m_render;
@@ -21,7 +22,10 @@ public class Engine {
         m_render = new Render(app);
         m_physEngine = new PhysicEngine();
         m_gameScene = new GameScene(m_physEngine);
+
+        m_physEngine.setGame_box(m_gameScene.getGame_box());
     }
+
 
     public void Update () {
         long curTime = System.currentTimeMillis();

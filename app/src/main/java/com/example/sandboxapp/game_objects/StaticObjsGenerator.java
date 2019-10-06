@@ -12,7 +12,7 @@ public class StaticObjsGenerator {
 
 
         ArrayList<StaticRect> walls = new ArrayList<>();
-        for (int i = 0; i < iWidth; i++) {
+        for (int i = 0; i < iWidth - 1; i++) {
             double w = StaticRect.WIDTH;
             double h = StaticRect.HEIGHT;
             double x = bottomLeft.x + w / 2 + i * w;

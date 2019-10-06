@@ -10,6 +10,8 @@ import com.example.sandboxapp.MainActivity;
 import com.example.sandboxapp.R;
 import com.example.sandboxapp.game_objects.Sand;
 import com.example.sandboxapp.game_objects.StaticRect;
+import com.example.sandboxapp.physics.GeomBox;
+import com.example.sandboxapp.physics.Intersection;
 
 import java.util.ArrayList;
 
@@ -35,6 +37,8 @@ public class Render {
 
         // draw sand
         Sand sand = scene.GetSand();
+        GeomBox gameBox = scene.getGame_box();
+
         for (int i = 0; i < sand.Size(); i++) {
             sand.At(i).GetRenderBox().Draw(canvas, rotAngle);
         }
