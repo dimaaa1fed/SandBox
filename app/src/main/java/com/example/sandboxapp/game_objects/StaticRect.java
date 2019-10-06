@@ -8,12 +8,12 @@ import com.example.sandboxapp.physics.PhysBox;
 import com.example.sandboxapp.render.RenderBox;
 
 
-public class SandParticle {
+public class StaticRect {
 
-    public static double HEIGHT = 0.05;
-    public static double WIDTH = 0.05;
+    public static double HEIGHT = 0.1;
+    public static double WIDTH = 0.1;
 
-    public static double SAND_MASS = 1;
+    public static double STATIC_MASS = 99999999;
 
     public static Vec2d DEFAULT_POS = new Vec2d(0.0f, 0.0f);
 
@@ -22,20 +22,20 @@ public class SandParticle {
     private PhysBox   m_physBox;
 
 
-    public SandParticle ()
+    public StaticRect ()
     {
         m_physBox = new PhysBox(DEFAULT_POS, WIDTH, HEIGHT,
-                    new Vec2d(0.0f, 0.0f), new Vec2d(0.0f, 0.0f), SAND_MASS);
+                new Vec2d(0.0f, 0.0f), new Vec2d(0.0f, 0.0f), STATIC_MASS);
 
         m_renderBox = new RenderBox((GeomBox)m_physBox, Color.YELLOW);
     }
 
-    public SandParticle (Vec2d pos)
+    public StaticRect (Vec2d pos)
     {
         m_physBox = new PhysBox(pos, WIDTH, HEIGHT,
-                new Vec2d(0.0f, 0.0f), new Vec2d(0.0f, 0.0f), SAND_MASS);
+                new Vec2d(0.0f, 0.0f), new Vec2d(0.0f, 0.0f), STATIC_MASS);
 
-        m_renderBox = new RenderBox((GeomBox)m_physBox, Color.YELLOW);
+        m_renderBox = new RenderBox((GeomBox)m_physBox, Color.BLACK);
     }
 
     public RenderBox GetRenderBox () {
