@@ -2,6 +2,7 @@ package com.example.sandboxapp.game;
 
 import android.util.Log;
 
+import com.example.sandboxapp.game_objects.SandParticle;
 import com.example.sandboxapp.math.Vec2d;
 import com.example.sandboxapp.physics.GeomBox;
 import com.example.sandboxapp.physics.Intersection;
@@ -26,6 +27,7 @@ public class PhysicEngine {
     private GeomBox game_box;
 
     double rotAngle;
+    double prevAngle;
 
     public PhysicEngine() {
         //this.game_box = game_box;
@@ -46,6 +48,15 @@ public class PhysicEngine {
 
         this.rotAngle = rotAngle + Math.PI;
 
+        for (int i = 0; i < objs.size(); i++) {
+            if (objs.get(i).m_type == PhysBox.Type.SAND && !Intersection.GeomBoxVsGeomBox(game_box, objs.get(i))){
+                Vec2d center = objs.get(i).getCenter();
+                center.rotateBy(prevAngle - this.rotAngle);
+                objs.get(i).setCenter(center);
+
+                objs.get(i).m_velocity.rotateBy(prevAngle - this.rotAngle);
+            }
+        }
         //gravity.rotateBy(-rotAngle);
 
         if (dt <= max_dt) {
@@ -68,6 +79,8 @@ public class PhysicEngine {
             IntegrateVelocities(cur_step);
             CorrectPositions();
         }
+
+        prevAngle = this.rotAngle;
         //gravity.rotateBy(rotAngle);
     }
 

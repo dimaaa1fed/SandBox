@@ -20,7 +20,7 @@ public class SandParticle {
 
     public SandParticle (Vec2d m_min, Vec2d m_max)
     {
-        m_physBox = new PhysBox(m_min, m_max, SAND_MASS);
+        m_physBox = new PhysBox(m_min, m_max, SAND_MASS, PhysBox.Type.SAND);
         m_renderBox = new RenderBox((GeomBox)m_physBox, Color.YELLOW);
     }
 

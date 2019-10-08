@@ -4,8 +4,8 @@ import com.example.sandboxapp.math.Vec2d;
 
 public class GeomBox {
 
-    protected Vec2d m_min;
-    protected Vec2d m_max;
+    public Vec2d m_min;
+    public Vec2d m_max;
 
     public GeomBox(Vec2d min, Vec2d max) {
         this.m_min = min;
@@ -43,4 +43,12 @@ public class GeomBox {
     public double getWidth () { return m_max.x - m_min.x; }
 
     public double getHeight () { return m_max.y - m_min.y; }
+
+    public void setCenter (Vec2d newCenter)
+    {
+        double w = getWidth();
+        double h = getHeight();
+        m_min = new Vec2d(newCenter.x - w / 2, newCenter.y - h / 2);
+        m_max = new Vec2d(newCenter.x + w / 2, newCenter.y + h / 2);
+    }
 }

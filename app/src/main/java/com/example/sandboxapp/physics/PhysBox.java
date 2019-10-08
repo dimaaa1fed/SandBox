@@ -12,17 +12,25 @@ public class PhysBox extends GeomBox {
 
     public double m_imass;
 
+    public enum Type {
+        SAND,
+        OTHER
+    }
+
+    public Type m_type;
+
     //TODO: change coeff
     public double restitution = 0.2;
 
     public double staticFriction = 1;
     public double dynamicFriction = 0.3;
 
-    public PhysBox(Vec2d m_min, Vec2d m_max, double m_imass) {
+    public PhysBox(Vec2d m_min, Vec2d m_max, double m_imass, Type type) {
         super(m_min, m_max);
         this.m_velocity = new Vec2d(0, 0);
         this.m_force = new Vec2d(0, 0);
         this.m_imass = m_imass;
+        this.m_type = type;
     }
 
     public void IntegrateForces (Vec2d gravity, double dt) {

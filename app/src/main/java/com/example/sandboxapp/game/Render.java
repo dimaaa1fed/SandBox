@@ -37,7 +37,6 @@ public class Render {
 
         // draw sand
         Sand sand = scene.GetSand();
-        GeomBox gameBox = scene.getGame_box();
 
         for (int i = 0; i < sand.Size(); i++) {
             sand.At(i).GetRenderBox().Draw(canvas, rotAngle);

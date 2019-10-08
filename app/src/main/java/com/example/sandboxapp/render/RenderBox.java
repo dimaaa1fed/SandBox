@@ -52,6 +52,4 @@ public class RenderBox {
         rect.set(left, top, right, bottom);
         return rect;
     }
-
-
 }
