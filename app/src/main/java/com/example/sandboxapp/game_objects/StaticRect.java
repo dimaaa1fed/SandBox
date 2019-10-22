@@ -8,27 +8,11 @@ import com.example.sandboxapp.physics.PhysBox;
 import com.example.sandboxapp.render.RenderBox;
 
 
-public class StaticRect {
-
-    public static double HEIGHT = 0.1;
-    public static double WIDTH = 0.1;
-
+public class StaticRect extends BoxObj {
     public static double STATIC_MASS = PhysBox.INFINITE_MASS;
 
-    private RenderBox m_renderBox;
-    private PhysBox   m_physBox;
-
-
-    public StaticRect (Vec2d m_min, Vec2d m_max)
+    public StaticRect (Vec2d center, double w, double h)
     {
-        m_physBox = new PhysBox(m_min, m_max, STATIC_MASS, PhysBox.Type.OTHER);
-        m_renderBox = new RenderBox((GeomBox)m_physBox, Color.BLACK);
-    }
-
-    public RenderBox GetRenderBox () {
-        return m_renderBox;
-    }
-    public PhysBox   GetPhysBox   () {
-        return m_physBox;
+       super(center, w, h, STATIC_MASS, PhysBox.Type.OTHER);
     }
 }

@@ -8,6 +8,7 @@ import android.graphics.Rect;
 
 import com.example.sandboxapp.MainActivity;
 import com.example.sandboxapp.R;
+import com.example.sandboxapp.game_objects.Bucket;
 import com.example.sandboxapp.game_objects.Sand;
 import com.example.sandboxapp.game_objects.StaticRect;
 import com.example.sandboxapp.physics.GeomBox;
@@ -47,5 +48,8 @@ public class Render {
         for (int i = 0; i < walls.size(); i++) {
             walls.get(i).GetRenderBox().Draw(canvas, rotAngle);
         }
+
+        Bucket bucket = scene.GetBucket();
+        bucket.GetRenderBox().Draw(canvas, 0);
     }
 }

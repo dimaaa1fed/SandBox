@@ -10,6 +10,7 @@ public class Engine {
     public  Render         m_render;
     public  PhysicEngine   m_physEngine;
     public  GameScene      m_gameScene;
+    public  LogicEngine    m_logicEngine;
 
     public  long           m_prevTime = -1;
 
@@ -21,9 +22,9 @@ public class Engine {
     public Engine (MainActivity app) {
         m_render = new Render(app);
         m_physEngine = new PhysicEngine();
-        m_gameScene = new GameScene(m_physEngine);
-
-        m_physEngine.setGame_box(m_gameScene.getGame_box());
+        m_gameScene = new GameScene(m_physEngine, new LevelDesc());
+        m_logicEngine = new LogicEngine(m_gameScene);
+        m_physEngine.setGame_box(m_gameScene.GetGameBox());
     }
 
 
@@ -36,6 +37,7 @@ public class Engine {
         int dt = (int)(curTime - m_prevTime);
         m_prevTime = curTime;
         m_physEngine.Update((double) dt / 1000, m_rotAngle / 180 * Math.PI);
+        m_logicEngine.Update();
     }
 
     public void Render (Canvas canva) {
