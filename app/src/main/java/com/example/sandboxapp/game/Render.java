@@ -50,6 +50,6 @@ public class Render {
         }
 
         Bucket bucket = scene.GetBucket();
-        bucket.GetRenderBox().Draw(canvas, 0);
+        bucket.GetRenderBox().Draw(canvas, rotAngle);
     }
 }

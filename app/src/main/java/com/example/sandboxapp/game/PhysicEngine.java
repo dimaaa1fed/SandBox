@@ -15,30 +15,30 @@ import java.util.HashMap;
 import static java.lang.Math.ceil;
 
 public class PhysicEngine {
-    private ArrayList<PhysBox> objs = new ArrayList<>();
-    private ArrayList<Mainfold> contacts = new ArrayList<>();
+    private ArrayList<PhysBox> m_objs = new ArrayList<>();
+    private ArrayList<Mainfold> m_contacts = new ArrayList<>();
 
-    private Vec2d gravity = new Vec2d(0, -0.5);
+    private Vec2d m_gravity = new Vec2d(0, -0.5);
 
     private double EPSILON = 0.0001;
 
-    private double max_dt = 0.01;
+    private double m_maxdt = 0.01;
 
-    private GeomBox game_box;
+    private GeomBox m_gameBox;
 
-    double rotAngle;
-    double prevAngle;
+    double m_rotAngle;
+    double m_prevAngle;
 
     public PhysicEngine() {
-        //this.game_box = game_box;
+        //this.m_gameBox = m_gameBox;
     }
 
-    public void setGame_box(GeomBox game_box) {
-        this.game_box = game_box;
+    public void SetGameBox(GeomBox gameBox) {
+        this.m_gameBox = gameBox;
     }
 
     public void AddPhysBox(PhysBox box) {
-        objs.add(box);
+        m_objs.add(box);
     }
 
 
@@ -46,26 +46,28 @@ public class PhysicEngine {
         int steps;
         double dt_step;
 
-        this.rotAngle = rotAngle + Math.PI;
+        this.m_rotAngle = rotAngle + Math.PI;
 
-        for (int i = 0; i < objs.size(); i++) {
-            if (objs.get(i).m_type == PhysBox.Type.SAND && !Intersection.GeomBoxVsGeomBox(game_box, objs.get(i))){
-                Vec2d center = objs.get(i).getCenter();
-                center.rotateBy(prevAngle - this.rotAngle);
-                objs.get(i).setCenter(center);
+        for (int i = 0; i < m_objs.size(); i++) {
+            if (m_objs.get(i).m_type == PhysBox.Type.SAND && !Intersection.GeomBoxVsGeomBox(m_gameBox, m_objs.get(i))){
+                Vec2d center = m_objs.get(i).getCenter();
+                center.rotateBy(m_prevAngle - this.m_rotAngle);
+                m_objs.get(i).setCenter(center);
 
-                objs.get(i).m_velocity.rotateBy(prevAngle - this.rotAngle);
+                m_objs.get(i).m_velocity.rotateBy(m_prevAngle - this.m_rotAngle);
             }
         }
-        //gravity.rotateBy(-rotAngle);
+        //m_gravity.rotateBy(-m_rotAngle);
 
-        if (dt <= max_dt) {
+        if (dt <= m_maxdt) {
             steps = 1;
             dt_step = dt;
         } else {
-            dt_step = max_dt;
-            steps = (int) ceil((dt / max_dt));
+            dt_step = m_maxdt;
+            steps = (int) ceil((dt / m_maxdt));
         }
+        Log.d("profile/phys", String.format("steps = %d", steps));
+
 
         for (int i = 0; i < steps; i++) {
             double cur_step = dt_step;
@@ -80,25 +82,25 @@ public class PhysicEngine {
             CorrectPositions();
         }
 
-        prevAngle = this.rotAngle;
-        //gravity.rotateBy(rotAngle);
+        m_prevAngle = this.m_rotAngle;
+        //m_gravity.rotateBy(m_rotAngle);
     }
 
     private void FindCollisions() {
-        contacts.clear();
+        m_contacts.clear();
 
-        for (int i = 0; i < objs.size(); i++) {
-            PhysBox a = objs.get(i);
+        for (int i = 0; i < m_objs.size(); i++) {
+            PhysBox a = m_objs.get(i);
 
-            for (int j = i + 1; j < objs.size(); j++) {
-                PhysBox b = objs.get(j);
+            for (int j = i + 1; j < m_objs.size(); j++) {
+                PhysBox b = m_objs.get(j);
 
                 if (a.m_imass == PhysBox.INFINITE_MASS && b.m_imass == PhysBox.INFINITE_MASS) {
                     continue;
                 } else if (Intersection.GeomBoxVsGeomBox(a, b)) {
                     Mainfold mainfold = new Mainfold(a, b);
                     if (mainfold.Solve()) {
-                        contacts.add(mainfold);
+                        m_contacts.add(mainfold);
                     }
                 }
             }
@@ -106,45 +108,43 @@ public class PhysicEngine {
     }
 
     private void IntegrateForces(double dt) {
-        for (int i = 0; i < objs.size(); i++) {
-            double r_angle = Intersection.GeomBoxVsGeomBox(game_box, objs.get(i)) ? rotAngle : rotAngle;
-            gravity.rotateBy(-r_angle);
-            objs.get(i).IntegrateForces(gravity, dt);
-            gravity.rotateBy(r_angle);
+        for (int i = 0; i < m_objs.size(); i++) {
+            double r_angle = Intersection.GeomBoxVsGeomBox(m_gameBox, m_objs.get(i)) ? m_rotAngle : m_rotAngle;
+            m_gravity.rotateBy(-r_angle);
+            m_objs.get(i).IntegrateForces(m_gravity, dt);
+            m_gravity.rotateBy(r_angle);
 
         }
     }
 
     private void InitializeCollisions() {
-        for (int i = 0; i < contacts.size(); i++) {
-            gravity.rotateBy(-rotAngle);
-            contacts.get(i).Init(gravity, EPSILON);
+        for (int i = 0; i < m_contacts.size(); i++) {
+            m_gravity.rotateBy(-m_rotAngle);
+            m_contacts.get(i).Init(m_gravity, EPSILON);
 
-            gravity.rotateBy(rotAngle);
+            m_gravity.rotateBy(m_rotAngle);
         }
     }
 
     private void SolveCollisions() {
-        for (int i = 0; i < contacts.size(); i++) {
-            contacts.get(i).Resolve(EPSILON);
+        for (int i = 0; i < m_contacts.size(); i++) {
+            m_contacts.get(i).Resolve(EPSILON);
         }
     }
 
     private void IntegrateVelocities(double dt) {
-        for (int i = 0; i < objs.size(); i++) {
-            double r_angle = Intersection.GeomBoxVsGeomBox(game_box, objs.get(i)) ? rotAngle : rotAngle;
-            gravity.rotateBy(-r_angle);
-            objs.get(i).IntegrateVelocity(gravity, dt);
-            gravity.rotateBy(r_angle);
-            objs.get(i).ClearForces();
+        for (int i = 0; i < m_objs.size(); i++) {
+            double r_angle = Intersection.GeomBoxVsGeomBox(m_gameBox, m_objs.get(i)) ? m_rotAngle : m_rotAngle;
+            m_gravity.rotateBy(-r_angle);
+            m_objs.get(i).IntegrateVelocity(m_gravity, dt);
+            m_gravity.rotateBy(r_angle);
+            m_objs.get(i).ClearForces();
         }
     }
 
     private void CorrectPositions() {
-        for (int i = 0; i < contacts.size(); i++) {
-            contacts.get(i).PositionCorrection();
+        for (int i = 0; i < m_contacts.size(); i++) {
+            m_contacts.get(i).PositionCorrection();
         }
     }
-
-
 }

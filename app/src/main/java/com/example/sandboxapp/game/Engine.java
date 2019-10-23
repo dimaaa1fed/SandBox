@@ -1,10 +1,10 @@
 package com.example.sandboxapp.game;
 
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.example.sandboxapp.MainActivity;
 import com.example.sandboxapp.math.Vec2d;
-import com.example.sandboxapp.physics.PhysBox;
 
 public class Engine {
     public  Render         m_render;
@@ -24,10 +24,11 @@ public class Engine {
         m_physEngine = new PhysicEngine();
         m_gameScene = new GameScene(m_physEngine, new LevelDesc());
         m_logicEngine = new LogicEngine(m_gameScene);
-        m_physEngine.setGame_box(m_gameScene.GetGameBox());
+        m_physEngine.SetGameBox(m_gameScene.GetGameBox());
     }
 
 
+    static long t = 0;
     public void Update () {
         long curTime = System.currentTimeMillis();
         if (m_prevTime == -1) {
@@ -36,8 +37,14 @@ public class Engine {
 
         int dt = (int)(curTime - m_prevTime);
         m_prevTime = curTime;
+
+        Log.d("profile/phys", String.format("frame time = %f", (float)(System.nanoTime() - t) / 1000000000));
+        t = System.nanoTime();
         m_physEngine.Update((double) dt / 1000, m_rotAngle / 180 * Math.PI);
-        m_logicEngine.Update();
+        Log.d("profile/phys", String.format("update time = %f", (float)(System.nanoTime() - t) /  1000000000));
+        t = System.nanoTime();
+
+        m_logicEngine.Update(m_rotAngle / 180 * Math.PI);
     }
 
     public void Render (Canvas canva) {
