@@ -66,7 +66,7 @@ public class PhysicEngine {
             dt_step = m_maxdt;
             steps = (int) ceil((dt / m_maxdt));
         }
-        Log.d("profile/phys", String.format("steps = %d", steps));
+        //Log.d("profile/phys", String.format("steps = %d", steps));
 
 
         for (int i = 0; i < steps; i++) {

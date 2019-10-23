@@ -40,7 +40,10 @@ public class GameScene {
             m_physEngine.AddPhysBox( m_sand.At(i).GetPhysBox());
         }
 
-        m_bucket = new Bucket(new Vec2d(0, 1.3));
+        Vec2d y = new Vec2d(0, 1);
+        Vec2d x = new Vec2d(1, 0);
+
+        m_bucket = new Bucket(x.getMultiplied(Bucket.W), y.getMultiplied(Bucket.H), new Vec2d(0, 1.3));
     }
 
     public Sand GetSand () {

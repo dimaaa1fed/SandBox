@@ -14,7 +14,7 @@ public class Engine {
 
     public  long           m_prevTime = -1;
 
-    public double   m_rotAngle = 0;
+    public double   m_rotAngle = 0, m_deltaAngle = 0;
     public Vec2d    m_prevTouch;
     public Vec2d    m_startCoord;
 
@@ -38,13 +38,17 @@ public class Engine {
         int dt = (int)(curTime - m_prevTime);
         m_prevTime = curTime;
 
-        Log.d("profile/phys", String.format("frame time = %f", (float)(System.nanoTime() - t) / 1000000000));
+        //Log.d("profile/phys", String.format("frame time = %f", (float)(System.nanoTime() - t) / 1000000000));
         t = System.nanoTime();
-        m_physEngine.Update((double) dt / 1000, m_rotAngle / 180 * Math.PI);
-        Log.d("profile/phys", String.format("update time = %f", (float)(System.nanoTime() - t) /  1000000000));
+        m_physEngine.Update((double) dt / 1000, m_rotAngle);
+        //Log.d("profile/phys", String.format("update time = %f", (float)(System.nanoTime() - t) /  1000000000));
         t = System.nanoTime();
 
-        m_logicEngine.Update(m_rotAngle / 180 * Math.PI);
+        //if (m_deltaAngle != 0)
+        //    Log.d("angle", String.format("%f", m_deltaAngle));
+
+        m_logicEngine.Update(m_deltaAngle, m_rotAngle);
+        m_deltaAngle = 0;
     }
 
     public void Render (Canvas canva) {
@@ -52,6 +56,7 @@ public class Engine {
             m_startCoord = new Vec2d(canva.getWidth() / 2, canva.getWidth() / 2);
         }
 
+        //Log.d("angle/render", String.format("%f", m_rotAngle));
         m_render.Draw(canva, m_gameScene, m_rotAngle);
     }
 
@@ -74,12 +79,14 @@ public class Engine {
         Vec2d curTouch = new Vec2d(x, y);
         curTouch.add(-m_startCoord.x, -m_startCoord.y);
 
-        m_rotAngle += (curTouch.getAngle() - m_prevTouch.getAngle()) * 180 / Math.PI;
+        m_deltaAngle = (curTouch.getAngle() - m_prevTouch.getAngle());
+        m_rotAngle += m_deltaAngle;
         m_prevTouch = curTouch;
     }
 
 
     public void OnTouchUp (int x, int y) {
         m_prevTouch = null;
+        m_deltaAngle = 0;
     }
 }

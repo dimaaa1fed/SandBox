@@ -13,6 +13,7 @@ public class LogicEngine {
     private GameScene m_gameScene;
     private int       m_totalSize;
     private int       m_collectedSize;
+    private int       m_loosedSize;
 
     public enum PlayState {
         PROCESSING,
@@ -27,34 +28,42 @@ public class LogicEngine {
         m_gameScene = scene;
         m_levelPlayState = PlayState.PROCESSING;
         m_totalSize = scene.GetSand().Size();
+        m_collectedSize = m_loosedSize = 0;
     }
 
 
-    void Update (double rotAngle) {
-        rotAngle = rotAngle + Math.PI;
-        Vec2d bucketCenter = m_gameScene.GetBucket().GetPhysBox().getCenter();
-        bucketCenter.rotateTo(rotAngle);
-        //m_gameScene.GetBucket().GetPhysBox().setCenter(bucketCenter);
-
+    void Update (double deltaAngle, double rotAngle) {
+        m_gameScene.GetBucket().RotateBy(-rotAngle);
+        //Log.d("app/logic", String.format("box coord %f %f", m_gameScene.GetBucket().GetCenter().x, m_gameScene.GetBucket().GetCenter().y));
         Sand sand = m_gameScene.GetSand();
         Iterator<SandParticle> it = sand.Iterator();
+        int i = 0;
         while (it.hasNext()) {
             SandParticle particle = it.next();
+            if (i == 0) {
+                i++;
+                //Log.d("app/logic", String.format("sand %f %f", particle.GetPhysBox().getCenter().x, particle.GetPhysBox().getCenter().y));
+            }
 
-            if (Intersection.GeomBoxVsGeomBox(particle.GetPhysBox(), m_gameScene.GetBucket().GetPhysBox())) {
-                Log.d("app/logic", "sand collected");
+            if (Intersection.GeomBoxVsBucket(particle.GetPhysBox(), m_gameScene.GetBucket())) {
+                //Log.d("app/logic", "sand collected");
                 m_collectedSize += 1;
+                it.remove();
+            } else if (Intersection.GeomBoxOutOfWorld(particle.GetPhysBox(), m_gameScene.GetBucket()))  {
+                m_loosedSize += 1;
                 it.remove();
             }
         }
 
-         if (m_collectedSize / (float)sand.Size() < m_gameScene.GetLevelDesc().m_percentToWin) {
-             m_levelPlayState = PlayState.FAILED;
+         if (m_collectedSize / (float)m_totalSize < m_gameScene.GetLevelDesc().m_percentToWin) {
+             if (m_loosedSize / (float)m_totalSize <= 1 - m_gameScene.GetLevelDesc().m_percentToWin)
+                m_levelPlayState = PlayState.PROCESSING;
+             else
+                 m_levelPlayState = PlayState.FAILED;
          } else {
              m_levelPlayState = PlayState.SUCCSED;
          }
 
-        //bucketCenter.rotateBy(-rotAngle);
-        //m_gameScene.GetBucket().GetPhysBox().setCenter(bucketCenter);
+        m_gameScene.GetBucket().RotateBy(rotAngle);
     }
 }
