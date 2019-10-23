@@ -27,7 +27,7 @@ public class BorderObjsGenerator {
         * */
         walls.add(new StaticRect(c1, wallLen, wallWidth));
         walls.add(new StaticRect(c2, wallWidth, wallLen));
-        walls.add(new StaticRect(c3, wallLen * 0.8, wallWidth));
+        walls.add(new StaticRect(c3, wallLen * 0.75, wallWidth));
         walls.add(new StaticRect(c4, wallWidth, wallLen));
 
         return walls;

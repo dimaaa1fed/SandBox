@@ -18,6 +18,7 @@ import com.example.sandboxapp.physics.GeomBox;
 import com.example.sandboxapp.physics.Intersection;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Render {
 
@@ -54,7 +55,20 @@ public class Render {
         }
 
         DrawBucket(canvas, rotAngle, scene.GetBucket());
+
+        Iterator<String> it = scene.GetMenuText().iterator();
+        while (it.hasNext())
+        {
+            String text = it.next();
+            Paint paintText = new Paint();
+            paintText.setColor(Color.RED);
+            paintText.setTextSize(60);
+
+            canvas.drawText(text, 10, canvas.getHeight() - 100, paintText);
+
+        }
     }
+
 
     public void DrawBucket (Canvas canvas, double rotAngle, Bucket bucket) {
         Rect rect = GetBucketRect(canvas, rotAngle, bucket);

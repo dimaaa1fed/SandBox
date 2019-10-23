@@ -10,8 +10,8 @@ import com.example.sandboxapp.render.RenderBox;
 
 
 public class SandParticle extends BoxObj {
-    public static double WIDTH  = 0.015;
-    public static double HEIGHT = 0.015;
+    public static double WIDTH  = 0.018;
+    public static double HEIGHT = 0.018;
 
     public static double SAND_MASS = 1;
 

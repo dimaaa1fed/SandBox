@@ -7,6 +7,7 @@ import com.example.sandboxapp.game_objects.SandParticle;
 import com.example.sandboxapp.math.Vec2d;
 import com.example.sandboxapp.physics.Intersection;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class LogicEngine {
@@ -63,6 +64,10 @@ public class LogicEngine {
          } else {
              m_levelPlayState = PlayState.SUCCSED;
          }
+
+        ArrayList<String> textx = new ArrayList<String>();
+        textx.add(String.format("Collected %.1f percents", m_collectedSize / (float)m_totalSize * 100));
+        m_gameScene.SetMenuText(textx);
 
         m_gameScene.GetBucket().RotateBy(rotAngle);
     }
