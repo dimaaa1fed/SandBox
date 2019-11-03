@@ -10,8 +10,4 @@
     <string name="str_start">Start</string>
     <string name="str_restart">Restart</string>
     <string name="str_score">Score</string>
-    <string name="str_moves">Moves</string>
-    <string name="str_total">Total</string>
-    <string name="str_combo">Combo</string>
-
 </resources>

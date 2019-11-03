@@ -19,8 +19,8 @@ public class Engine {
     public Vec2d    m_startCoord;
 
 
-    public Engine (MainActivity app) {
-        m_render = new Render(app);
+    public Engine () {
+        m_render = new Render();
         m_physEngine = new PhysicEngine();
         m_gameScene = new GameScene(m_physEngine, new LevelDesc());
         m_logicEngine = new LogicEngine(m_gameScene);

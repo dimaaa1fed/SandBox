@@ -22,21 +22,12 @@ import java.util.Iterator;
 
 public class Render {
 
-    private Bitmap m_bitmapBack;
-
-    public Render (MainActivity app) {
-        m_bitmapBack = BitmapFactory.decodeResource(app.getResources(), R.drawable.background);
+    public Render () {
     }
 
 
     public void Draw (Canvas canvas, GameScene scene, double rotAngle) {
         rotAngle = rotAngle * 180 / Math.PI;
-
-        // draw background
-        Rect dest = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
-        Paint paint = new Paint();
-        paint.setFilterBitmap(true);
-        canvas.drawBitmap(m_bitmapBack, null, dest, paint);
 
         /* draw game objects */
         // draw box

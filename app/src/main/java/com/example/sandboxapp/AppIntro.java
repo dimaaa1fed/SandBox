@@ -753,6 +753,7 @@ public class AppIntro
             Rect r = new Rect();
 
             m_paintTextWhite.getTextBounds(m_strDepth, 0, m_strDepth.length(), r);
+
             float h = r.height();
             float vOff = 0.0f;
             //if (m_scrH > m_scrW)

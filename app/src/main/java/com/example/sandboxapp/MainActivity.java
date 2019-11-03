@@ -1,7 +1,10 @@
 package com.example.sandboxapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.util.Xml;
 import android.view.*;
 //import android.widget.*;
 
@@ -11,6 +14,8 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.content.res.*;
 import android.graphics.*;
+
+import org.xmlpull.v1.XmlPullParser;
 //import android.view.ViewGroup.LayoutParams;
 
 
@@ -35,7 +40,7 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
 
     AppIntro				m_app;
     ViewIntro			    m_viewIntro;
-    ViewGame				m_viewGame;
+    GameView				m_viewGame;
 
 
     // screen dim
@@ -112,9 +117,37 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
         }
         if (m_viewCur == VIEW_GAME)
         {
-            m_viewGame = new ViewGame(this);
             Log.d("THREE", "Switch to m_viewGame" );
-            setContentView(m_viewGame);
+
+            setContentView(R.layout.sample_game_view);
+
+            m_viewGame = GameView.game_view;
+
+            findViewById(R.id.game).setOnTouchListener(new View.OnTouchListener() {
+                                              @Override
+                                              public boolean onTouch(View v, MotionEvent evt) {
+                                                  int x = (int)evt.getX();
+                                                  int y = (int)evt.getY();
+                                                  int touchType = AppIntro.TOUCH_DOWN;
+
+                                                  //if (evt.getAction() == MotionEvent.ACTION_DOWN)
+                                                  //  Log.d("THREE", "Touessed (ACTION_DOWN) at (" + String.valueOf(x) + "," + String.valueOf(y) +  ")"  );
+
+                                                  if (evt.getAction() == MotionEvent.ACTION_MOVE)
+                                                      touchType = AppIntro.TOUCH_MOVE;
+                                                  if (evt.getAction() == MotionEvent.ACTION_UP)
+                                                      touchType = AppIntro.TOUCH_UP;
+
+                                                  if (m_viewCur == VIEW_INTRO)
+                                                      return m_viewIntro.onTouch( x, y, touchType);
+                                                  if (m_viewCur == VIEW_GAME)
+                                                      return m_viewGame.onTouch(x, y, touchType);
+
+                                                  return true;
+                                              }
+                                              });
+
+
             m_viewGame.start();
         }
     }
@@ -143,7 +176,7 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
         int touchType = AppIntro.TOUCH_DOWN;
 
         //if (evt.getAction() == MotionEvent.ACTION_DOWN)
-        //  Log.d("THREE", "Touch pressed (ACTION_DOWN) at (" + String.valueOf(x) + "," + String.valueOf(y) +  ")"  );
+        //  Log.d("THREE", "Touessed (ACTION_DOWN) at (" + String.valueOf(x) + "," + String.valueOf(y) +  ")"  );
 
         if (evt.getAction() == MotionEvent.ACTION_MOVE)
             touchType = AppIntro.TOUCH_MOVE;
@@ -154,8 +187,7 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
             return m_viewIntro.onTouch( x, y, touchType);
         if (m_viewCur == VIEW_GAME)
             return m_viewGame.onTouch(x, y, touchType);
-        {
-        }
+
         return true;
     }
     public boolean onKeyDown(int keyCode, KeyEvent evt)
