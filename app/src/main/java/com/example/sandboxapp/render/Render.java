@@ -4,8 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.example.sandboxapp.MainActivity;
@@ -23,7 +25,18 @@ import java.util.Iterator;
 
 public class Render {
 
+    private MainActivity m_app;
+    private Bitmap       m_bucketTextureSrc;
+    private Bitmap       m_bucketTexture;
+
     public Render () {
+
+    }
+
+
+    public void Init (MainActivity app) {
+        m_app = app;
+        m_bucketTextureSrc = BitmapFactory.decodeResource(app.getResources(), R.drawable.bucket_texture);
     }
 
 
@@ -51,31 +64,26 @@ public class Render {
 
 
     public void DrawBucket (Canvas canvas, double rotAngle, Bucket bucket) {
-        Rect rect = GetBucketRect(canvas, rotAngle, bucket);
+        Matrix matrix = new Matrix();
+        Rect dest = GetBucketRect(canvas, rotAngle, bucket);
+        //matrix.postTranslate(100, 0);
 
-        Paint yellowPaint = new Paint();
-        yellowPaint.setColor(Color.GRAY);
-        yellowPaint.setStyle(Paint.Style.FILL);
+        matrix.postScale((float)(dest.right - dest.left) / m_bucketTextureSrc.getWidth(),
+                (float)(dest.top - dest.bottom) / m_bucketTextureSrc.getHeight());
+        //matrix.postScale(0.1f, 0.1f);
+        m_bucketTexture = Bitmap.createBitmap(m_bucketTextureSrc, 0, 0,
+                m_bucketTextureSrc.getWidth(), m_bucketTextureSrc.getHeight(), matrix, true);
 
+        //Rect dest = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setFilterBitmap(true);
 
         canvas.translate(canvas.getWidth() / 2, canvas.getWidth() / 2);
-        //canvas.rotate((float) rotAngle);
-        //canvas.rotate((float) rotAngle);
+        canvas.translate(dest.left, dest.bottom);
 
-        canvas.drawRect(rect, yellowPaint);
+        canvas.drawBitmap(m_bucketTexture, 0, 0, paint);
 
-        /*canvas.rotate((float) -rotAngle);
-        Paint paint = new Paint();
-        paint.setColor(Color.RED);
-        paint.setStyle(Paint.Style.FILL);
-
-        Vec2d c = bucket.GetCenter().getRotatedBy(rotAngle / 180 * Math.PI);
-
-        canvas.drawCircle((int)(c.x  * canvas.getWidth()), (int)(c.y  * canvas.getWidth()),
-                (int)(canvas.getWidth() * bucket.getM_Dist()), paint);
-        canvas.rotate((float) rotAngle);*/
-        //canvas.rotate((float) rotAngle);
-        //canvas.rotate((float) -rotAngle);
+        canvas.translate(-dest.left, -dest.bottom);
         canvas.translate(-canvas.getWidth() / 2, -canvas.getWidth() / 2);
     }
 

@@ -13,4 +13,5 @@
     <string name="reset">Reset</string>
     <string name="background_image">background_image</string>
     <string name="pause">Pause</string>
+    <string name="NextLevel">Next level</string>
 </resources>

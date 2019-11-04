@@ -25,11 +25,11 @@ public class GameScene {
         m_physEngine = physicEngine;
         m_levelDesc = desc;
 
-        Vec2d leftBottomBorder = new Vec2d(-desc.m_borderLen / 2, -desc.m_borderLen / 2);
-        Vec2d rightTopBorder = new Vec2d(desc.m_borderLen / 2, desc.m_borderLen / 2);
+        Vec2d leftBottomBorder = new Vec2d(-desc.m_wallLen / 2, -desc.m_wallLen / 2);
+        Vec2d rightTopBorder = new Vec2d(desc.m_wallLen / 2, desc.m_wallLen / 2);
         m_gameBox = new GeomBox(leftBottomBorder, rightTopBorder);
 
-        m_walls = BorderObjsGenerator.Generate(0.9f / Math.sqrt(2) * 2, 0.1);
+        m_walls = BorderObjsGenerator.GenerateByField(desc.m_wallLen, desc.m_field, desc.m_size);
         for (int i = 0; i < m_walls.size(); i++) {
             m_physEngine.AddPhysBox( m_walls.get(i).GetPhysBox());
         }
@@ -57,6 +57,4 @@ public class GameScene {
     public GeomBox GetGameBox() { return m_gameBox; }
 
     public LevelDesc GetLevelDesc() { return m_levelDesc; }
-
-
 }

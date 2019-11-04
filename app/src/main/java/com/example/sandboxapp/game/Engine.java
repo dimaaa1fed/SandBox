@@ -6,9 +6,11 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.example.sandboxapp.GameView;
+import com.example.sandboxapp.MainActivity;
 import com.example.sandboxapp.math.Vec2d;
 import com.example.sandboxapp.render.Render;
 
+import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Engine {
@@ -25,12 +27,21 @@ public class Engine {
 
     public ProgressBar m_progessBar;
 
+    public LevelDesc m_curLevelDescr;
+
+    public ArrayList<LevelDesc> m_levels = new ArrayList<>();
+    public int m_curLevel = 0;
+
     private ReentrantLock m_lock;
+    private MainActivity m_app;
 
     public Engine () {
+        UpdateLevels();
+        m_rotAngle = 0;
+        m_deltaAngle = 0;
         m_render = new Render();
         m_physEngine = new PhysicEngine();
-        m_gameScene = new GameScene(m_physEngine, new LevelDesc());
+        m_gameScene = new GameScene(m_physEngine, m_curLevelDescr);
         m_logicEngine = new LogicEngine(m_gameScene);
         m_physEngine.SetGameBox(m_gameScene.GetGameBox());
     }
@@ -40,8 +51,10 @@ public class Engine {
         m_prevTime = -1;
     }
 
-    public void Init(ProgressBar bar, ReentrantLock lock)
+    public void Init(ProgressBar bar, ReentrantLock lock, MainActivity app)
     {
+        m_app = app;
+        m_render.Init(app);
         m_progessBar = bar;
         m_logicEngine.Init(bar);
         m_lock = lock;
@@ -55,14 +68,24 @@ public class Engine {
             m_deltaAngle = 0;
             m_render = new Render();
             m_physEngine = new PhysicEngine();
-            m_gameScene = new GameScene(m_physEngine, new LevelDesc());
+            m_gameScene = new GameScene(m_physEngine, m_curLevelDescr);
             m_logicEngine = new LogicEngine(m_gameScene);
             m_physEngine.SetGameBox(m_gameScene.GetGameBox());
             m_logicEngine.Init(m_progessBar);
+            m_render.Init(m_app);
         } finally {
             m_lock.unlock();
         }
     }
+
+    public void NextLevel()
+    {
+        if (m_curLevel < m_levels.size() - 1)
+            m_curLevel++;
+        UpdateLevels();
+        Reset();
+    }
+
 
     static long t = 0;
     public void Update () {
@@ -124,5 +147,161 @@ public class Engine {
     public void OnTouchUp (int x, int y) {
         m_prevTouch = null;
         m_deltaAngle = 0;
+    }
+
+    public boolean HasNext()
+    {
+        return m_curLevel + 1 < m_levels.size();
+    }
+
+
+    private void UpdateLevels()
+    {
+        m_levels.clear();
+
+        // create levels
+        m_levels.add(new LevelDesc(new Vec2d(-0.5, -0.5),
+                     new Vec2d(0.5, 0.5), 0.5,
+                     0.9 / Math.sqrt(2) * 2, "" +
+                "******************************" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*************************    *"
+        , 30));
+
+        m_levels.add(new LevelDesc(new Vec2d(-0.5, -0.5),
+                new Vec2d(0.5, 0.5), 0.5,
+                0.9 / Math.sqrt(2) * 2, "" +
+                "**************************  **" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*     ************************" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "************************     *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "*   **************************" +
+                "*                            *" +
+                "*                            *" +
+                "*                            *" +
+                "******************************"
+                , 30));
+
+        m_levels.add(new LevelDesc(new Vec2d(-0.5, -0.5),
+                new Vec2d(0.5, 0.5), 0.5,
+                0.9 / Math.sqrt(2) * 2,
+                "" +
+                        "***************************  *" +
+                        "*                            *" +
+                        "*                            *" +
+                        "*        *******             *" +
+                        "*                            *" +
+                        "*                 *****      *" +
+                        "*   *******                  *" +
+                        "*                            *" +
+                        "*                            *" +
+                        "*        *********     *******" +
+                        "*                            *" +
+                        "*                            *" +
+                        "*                            *" +
+                        "****   ***********           *" +
+                        "*                            *" +
+                        "*                            *" +
+                        "*              ***************" +
+                        "*                            *" +
+                        "*                            *" +
+                        "*      ***********           *" +
+                        "*                            *" +
+                        "*                            *" +
+                        "**********       *************" +
+                        "*                            *" +
+                        "*                            *" +
+                        "*      *************         *" +
+                        "*                            *" +
+                        "*                            *" +
+                        "*                            *" +
+                        "******************************"
+                , 30));
+
+        m_levels.add(new LevelDesc(new Vec2d(-0.5, -0.5),
+                new Vec2d(0.5, 0.5), 0.5,
+                0.9 / Math.sqrt(2) * 2,
+                "" +
+                        "******************************" +
+                        "*                             " +
+                        "*                             " +
+                        "*                            *" +
+                        "*  ********************      *" +
+                        "*                     *      *" +
+                        "*                     *      *" +
+                        "*                     *      *" +
+                        "*                     *      *" +
+                        "********************  ********" +
+                        "*                            *" +
+                        "*                            *" +
+                        "*                     *      *" +
+                        "*                     *      *" +
+                        "*                     *      *" +
+                        "**************************   *" +
+                        "*          ***         ***   *" +
+                        "*          ***         ***   *" +
+                        "*                      ***   *" +
+                        "*     *          ***         *" +
+                        "*     *          ***         *" +
+                        "*     *          ***         *" +
+                        "*     ************************" +
+                        "*                            *" +
+                        "*                            *" +
+                        "*                            *" +
+                        "*                   *        *" +
+                        "*      **************        *" +
+                        "*                            *" +
+                        "******************************"
+                , 30));
+
+        m_curLevelDescr = m_levels.get(m_curLevel);
     }
 }

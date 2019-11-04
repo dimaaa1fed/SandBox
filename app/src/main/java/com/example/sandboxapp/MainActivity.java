@@ -2,6 +2,7 @@ package com.example.sandboxapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Xml;
@@ -71,6 +72,8 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
         display.getSize(point);
         m_screenW = point.x;
         m_screenH = point.y;
+
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         Log.d("THREE", "Screen size is " + String.valueOf(m_screenW) + " * " +  String.valueOf(m_screenH) );
 
@@ -154,7 +157,9 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
             m_viewGame.Init(
                     (ProgressBar) findViewById(R.id.progressBar),
                     (Button) findViewById(R.id.reset_button),
-                    (Switch) findViewById(R.id.pause_play_switch)
+                    (Switch) findViewById(R.id.pause_play_switch),
+                    (Button) findViewById(R.id.next_level),
+                    this
             );
             m_viewGame.start();
         }

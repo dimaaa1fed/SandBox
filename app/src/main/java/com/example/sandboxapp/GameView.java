@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.Switch;
 
 import com.example.sandboxapp.game.Engine;
+import com.example.sandboxapp.game.LogicEngine;
 
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -37,6 +38,8 @@ public class GameView extends View {
     private final ReentrantLock lock = new ReentrantLock();
 
     Switch m_pausePlaySwitch;
+
+    Button m_nextLevel;
 
     private static final int UPDATE_TIME_MS = 30;
 
@@ -67,16 +70,27 @@ public class GameView extends View {
         game_view = this;
     }
 
-    public void Init(ProgressBar bar, Button reset, Switch pausePlaySwitch)
+    public void Init(ProgressBar bar, Button reset, Switch pausePlaySwitch, Button nextLevel, MainActivity app)
     {
-        m_engine.Init(bar, lock);
+        m_engine.Init(bar, lock, app);
         m_pausePlaySwitch = pausePlaySwitch;
+        m_nextLevel = nextLevel;
 
         reset.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 reset();
             }
         });
+
+        nextLevel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                NextLevel();
+                m_nextLevel.setVisibility(INVISIBLE);
+            }
+        });
+
+        m_nextLevel.setVisibility(INVISIBLE);
+
 
         pausePlaySwitch.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -165,6 +179,12 @@ public class GameView extends View {
         m_pausePlaySwitch.setChecked(false);
     }
 
+    public void NextLevel() {
+        m_engine.NextLevel();
+        m_active = true;
+        m_pausePlaySwitch.setChecked(false);
+    }
+
 
     public void update()
     {
@@ -184,5 +204,11 @@ public class GameView extends View {
 
         // OUR
         m_engine.Render(canvas);
+
+
+        if (m_engine.m_logicEngine.GetState() == LogicEngine.PlayState.SUCCSED && m_engine.HasNext())
+        {
+            m_nextLevel.setVisibility(VISIBLE);
+        }
     }
 }

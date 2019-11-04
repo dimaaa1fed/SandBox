@@ -3,14 +3,26 @@ package com.example.sandboxapp.game;
 import com.example.sandboxapp.math.Vec2d;
 
 public class LevelDesc {
-    public double m_borderLen = 0.9f / Math.sqrt(2) * 2;
-    public double m_borderWidth = 0.2;
+    public Vec2d m_leftBottomSand;
+    public Vec2d m_rightTopSand;
 
-    public Vec2d m_leftBottomSand = new Vec2d(-0.5, -0.5);
-    public Vec2d m_rightTopSand = new Vec2d(0.5, 0.5);
+    public double m_wallLen;
+    public double m_percentToWin;
+    public String m_field;
+    public int    m_size;
 
-
-    public double m_percentToWin = 0.5;
-    //TODO: Add level objs desc
-
+    LevelDesc(Vec2d leftBottomSand,
+              Vec2d rightTopSand,
+              double percentToWin,
+              double wallLen,
+              String field,
+              int size)
+    {
+        m_leftBottomSand = leftBottomSand;
+        m_rightTopSand = rightTopSand;
+        m_percentToWin = percentToWin;
+        m_field = field;
+        m_size = size;
+        m_wallLen = wallLen;
+    }
 }

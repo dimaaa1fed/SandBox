@@ -83,4 +83,9 @@ public class LogicEngine {
         //Log.d("kek", new Integer(m_collectedSize).toString());
     }
 
+    public PlayState GetState()
+    {
+        return m_levelPlayState;
+    }
+
 }
