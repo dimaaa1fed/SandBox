@@ -1,7 +1,11 @@
 package com.example.sandboxapp.game;
 
+import android.animation.ObjectAnimator;
 import android.util.Log;
+import android.widget.ProgressBar;
 
+import com.example.sandboxapp.GameView;
+import com.example.sandboxapp.R;
 import com.example.sandboxapp.game_objects.Sand;
 import com.example.sandboxapp.game_objects.SandParticle;
 import com.example.sandboxapp.math.Vec2d;
@@ -15,6 +19,9 @@ public class LogicEngine {
     private int       m_totalSize;
     private int       m_collectedSize;
     private int       m_loosedSize;
+    private boolean   m_isInited = false;
+
+    private ProgressBar m_progressBar;
 
     public enum PlayState {
         PROCESSING,
@@ -32,6 +39,12 @@ public class LogicEngine {
         m_collectedSize = m_loosedSize = 0;
     }
 
+    public void Init(ProgressBar bar)
+    {
+        m_progressBar = bar;
+        m_progressBar.setMax(m_gameScene.GetSand().Size());
+        m_progressBar.setProgress(1);
+    }
 
     void Update (double deltaAngle, double rotAngle) {
         m_gameScene.GetBucket().RotateBy(-rotAngle);
@@ -65,10 +78,9 @@ public class LogicEngine {
              m_levelPlayState = PlayState.SUCCSED;
          }
 
-        ArrayList<String> textx = new ArrayList<String>();
-        textx.add(String.format("Collected %.1f percents", m_collectedSize / (float)m_totalSize * 100));
-        m_gameScene.SetMenuText(textx);
-
         m_gameScene.GetBucket().RotateBy(rotAngle);
+        m_progressBar.setProgress(m_collectedSize);
+        //Log.d("kek", new Integer(m_collectedSize).toString());
     }
+
 }

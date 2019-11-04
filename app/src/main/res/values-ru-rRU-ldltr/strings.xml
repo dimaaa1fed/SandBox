@@ -10,4 +10,7 @@
     <string name="str_start">Начать</string>
     <string name="str_restart">Заново</string>
     <string name="str_score">Счет</string>
+    <string name="reset">Заново</string>
+    <string name="background_image">Задник</string>
+    <string name="pause">Пауза</string>
 </resources>

@@ -16,13 +16,29 @@ public class Intersection {
 
     public static boolean GeomBoxVsBucket(GeomBox a, Bucket b)
     {
-        double length = a.getCenter().getAdded(b.GetCenter().getMultiplied(-1)).getLength();
-        return length <= b.getM_Dist();
+        Vec2d p1 = b.GetCenter().getAdded(b.GetA()).getAdded(b.GetB());
+        Vec2d p2 = b.GetCenter().getAdded(b.GetA().getDivided(-1)).getAdded(b.GetB());
+        Vec2d p3 = b.GetCenter().getAdded(b.GetA().getDivided(-1)).getAdded(b.GetB().getDivided(-1));
+        Vec2d p4 = b.GetCenter().getAdded(b.GetA()).getAdded(b.GetB().getDivided(-1));
+
+        Vec2d side1 = p2.getSubtracted(p1);
+        Vec2d side2 = p3.getSubtracted(p2);
+        Vec2d side3 = p4.getSubtracted(p3);
+        Vec2d side4 = p1.getSubtracted(p4);
+
+        Vec2d from1 = a.getCenter().getSubtracted(p1);
+        Vec2d from2 = a.getCenter().getSubtracted(p2);
+        Vec2d from3 = a.getCenter().getSubtracted(p3);
+        Vec2d from4 = a.getCenter().getSubtracted(p4);
+
+        if (from1.dot(side1) >= 0 && from2.dot(side2) >= 0 && from3.dot(side3) >= 0 && from4.dot(side4) >= 0)
+            return true;
+        return false;
     }
 
     public static boolean GeomBoxOutOfWorld(GeomBox a, Bucket b)
     {
         double length = a.getCenter().getLength();
-        return length > b.GetCenter().getLength();
+        return length > b.GetCenter().getLength() * 2.28;
     }
 }

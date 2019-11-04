@@ -13,35 +13,13 @@ import android.view.View;
 import android.graphics.Canvas;
 import android.os.Handler;
 import android.os.Message;
-import android.speech.tts.TextToSpeech;
-import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Switch;
 
 import com.example.sandboxapp.game.Engine;
 
-//****************************************************************
-//class RefreshHandler
-//****************************************************************
-class RefreshHandler extends Handler
-{
-    private GameView	m_viewGame;
-
-    public RefreshHandler(GameView v)
-    {
-        m_viewGame = v;
-    }
-
-    public void handleMessage(Message msg)
-    {
-        m_viewGame.update();
-        m_viewGame.invalidate();
-    }
-
-    public void sleep(long delayMillis)
-    {
-        this.removeMessages(0);
-        sendMessageDelayed(obtainMessage(0), delayMillis);
-    }
-};
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * TODO: document your custom view class.
@@ -52,10 +30,13 @@ public class GameView extends View {
     private TextPaint mTextPaint;
 
     // OUR
-    private RefreshHandler   m_refresh;
     private boolean			 m_active   = false;
 
     Engine m_engine;
+
+    private final ReentrantLock lock = new ReentrantLock();
+
+    Switch m_pausePlaySwitch;
 
     private static final int UPDATE_TIME_MS = 30;
 
@@ -64,7 +45,6 @@ public class GameView extends View {
         init(null, 0);
         // OUR
         m_engine = new Engine();
-        m_refresh = new RefreshHandler(this);
 
         game_view = this;
     }
@@ -75,7 +55,6 @@ public class GameView extends View {
 
         // OUR
         m_engine = new Engine();
-        m_refresh = new RefreshHandler(this);
         game_view = this;
     }
 
@@ -85,14 +64,53 @@ public class GameView extends View {
 
         // OUR
         m_engine = new Engine();
-        m_refresh = new RefreshHandler(this);
         game_view = this;
     }
 
+    public void Init(ProgressBar bar, Button reset, Switch pausePlaySwitch)
+    {
+        m_engine.Init(bar, lock);
+        m_pausePlaySwitch = pausePlaySwitch;
+
+        reset.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                reset();
+            }
+        });
+
+        pausePlaySwitch.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                while (!lock.tryLock())
+                    ;
+                try {
+                    m_active = !m_active;
+                    m_engine.Pause();
+                } finally {
+                    lock.unlock();
+                }
+            }
+        });
+
+    }
+    Thread t;
     public void start()
     {
         m_active 	= true;
-        m_refresh.sleep(UPDATE_TIME_MS);
+        t = new Thread(new Runnable() {
+            public void run() {
+                while (true) {
+                    while (!lock.tryLock())
+                        ;
+                    try {
+                        update();
+                    } finally {
+                        lock.unlock();
+                    }
+
+                }
+            }
+        });
+        t.start();
     }
 
     public void onDestroy()
@@ -124,6 +142,9 @@ public class GameView extends View {
 
     public boolean onTouch(int x, int y, int evtType)
     {
+        if (!m_active)
+            return true;
+
         switch (evtType) {
             case AppIntro.TOUCH_DOWN:
                 m_engine.OnTouchDown(x, y);
@@ -138,17 +159,19 @@ public class GameView extends View {
         return true;
     }
 
-
+    public void reset() {
+        m_engine.Reset();
+        m_active = true;
+        m_pausePlaySwitch.setChecked(false);
+    }
 
 
     public void update()
     {
-        if (!m_active)
-            return;
-        // send next update to game
-        if (m_active)
-            m_refresh.sleep(UPDATE_TIME_MS);
-
+        if (m_active) {
+            m_engine.Update();
+            invalidate();
+        }
     }
 
     private void invalidateTextPaintAndMeasurements() {
@@ -160,7 +183,6 @@ public class GameView extends View {
         super.onDraw(canvas);
 
         // OUR
-        m_engine.Update();
         m_engine.Render(canvas);
     }
 }

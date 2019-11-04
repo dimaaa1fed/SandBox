@@ -14,6 +14,9 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.content.res.*;
 import android.graphics.*;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Switch;
 
 import org.xmlpull.v1.XmlPullParser;
 //import android.view.ViewGroup.LayoutParams;
@@ -148,6 +151,11 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
                                               });
 
 
+            m_viewGame.Init(
+                    (ProgressBar) findViewById(R.id.progressBar),
+                    (Button) findViewById(R.id.reset_button),
+                    (Switch) findViewById(R.id.pause_play_switch)
+            );
             m_viewGame.start();
         }
     }

@@ -10,4 +10,7 @@
     <string name="str_start">Start</string>
     <string name="str_restart">Restart</string>
     <string name="str_score">Score</string>
+    <string name="reset">Reset</string>
+    <string name="background_image">background_image</string>
+    <string name="pause">Pause</string>
 </resources>

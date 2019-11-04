@@ -1,4 +1,4 @@
-package com.example.sandboxapp.game;
+package com.example.sandboxapp.render;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.example.sandboxapp.MainActivity;
 import com.example.sandboxapp.R;
+import com.example.sandboxapp.game.GameScene;
 import com.example.sandboxapp.game_objects.Bucket;
 import com.example.sandboxapp.game_objects.Sand;
 import com.example.sandboxapp.game_objects.StaticRect;
@@ -46,18 +47,6 @@ public class Render {
         }
 
         DrawBucket(canvas, rotAngle, scene.GetBucket());
-
-        Iterator<String> it = scene.GetMenuText().iterator();
-        while (it.hasNext())
-        {
-            String text = it.next();
-            Paint paintText = new Paint();
-            paintText.setColor(Color.RED);
-            paintText.setTextSize(60);
-
-            canvas.drawText(text, 10, canvas.getHeight() - 100, paintText);
-
-        }
     }
 
 

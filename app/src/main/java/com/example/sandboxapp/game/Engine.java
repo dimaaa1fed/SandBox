@@ -1,13 +1,18 @@
 package com.example.sandboxapp.game;
 
 import android.graphics.Canvas;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 
-import com.example.sandboxapp.MainActivity;
+import com.example.sandboxapp.GameView;
 import com.example.sandboxapp.math.Vec2d;
+import com.example.sandboxapp.render.Render;
+
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Engine {
-    public  Render         m_render;
+    public Render m_render;
     public  PhysicEngine   m_physEngine;
     public  GameScene      m_gameScene;
     public  LogicEngine    m_logicEngine;
@@ -18,6 +23,9 @@ public class Engine {
     public Vec2d    m_prevTouch;
     public Vec2d    m_startCoord;
 
+    public ProgressBar m_progessBar;
+
+    private ReentrantLock m_lock;
 
     public Engine () {
         m_render = new Render();
@@ -27,6 +35,34 @@ public class Engine {
         m_physEngine.SetGameBox(m_gameScene.GetGameBox());
     }
 
+    public void Pause()
+    {
+        m_prevTime = -1;
+    }
+
+    public void Init(ProgressBar bar, ReentrantLock lock)
+    {
+        m_progessBar = bar;
+        m_logicEngine.Init(bar);
+        m_lock = lock;
+    }
+
+    public void Reset() {
+        while (!m_lock.tryLock())
+            ;
+        try {
+            m_rotAngle = 0;
+            m_deltaAngle = 0;
+            m_render = new Render();
+            m_physEngine = new PhysicEngine();
+            m_gameScene = new GameScene(m_physEngine, new LevelDesc());
+            m_logicEngine = new LogicEngine(m_gameScene);
+            m_physEngine.SetGameBox(m_gameScene.GetGameBox());
+            m_logicEngine.Init(m_progessBar);
+        } finally {
+            m_lock.unlock();
+        }
+    }
 
     static long t = 0;
     public void Update () {

@@ -20,7 +20,6 @@ public class GameScene {
     private GeomBox               m_gameBox;
     private PhysicEngine          m_physEngine;
     private LevelDesc             m_levelDesc;
-    private ArrayList<String>     m_menuTexts;
 
     public GameScene (PhysicEngine physicEngine, LevelDesc desc) {
         m_physEngine = physicEngine;
@@ -35,7 +34,7 @@ public class GameScene {
             m_physEngine.AddPhysBox( m_walls.get(i).GetPhysBox());
         }
 
-        m_sand = SandGenerator.Generate(desc.m_leftBottomSand, desc.m_rightTopSand, 120);
+        m_sand = SandGenerator.Generate(desc.m_leftBottomSand, desc.m_rightTopSand, 190);
         for (int i = 0; i < m_sand.Size(); i++) {
             m_sand.At(i).SetRenderBox(new RenderBox(m_sand.At(i).GetPhysBox(), Color.YELLOW));
             m_physEngine.AddPhysBox( m_sand.At(i).GetPhysBox());
@@ -59,8 +58,5 @@ public class GameScene {
 
     public LevelDesc GetLevelDesc() { return m_levelDesc; }
 
-    public ArrayList<String> GetMenuText() {return m_menuTexts;}
-
-    public void SetMenuText(ArrayList<String> new_text) {m_menuTexts = new_text;}
 
 }

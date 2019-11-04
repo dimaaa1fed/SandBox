@@ -1,30 +1,55 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:app2="http://schemas.android.com/apk/res/android"
+    xmlns:ndroid="http://schemas.android.com/tools"
+    android:id="@+id/game_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/game_view"
-    xmlns:ndroid="http://schemas.android.com/tools">
+    android:background="#D1BD60">
 
     <Button
         android:id="@+id/reset_button"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
         android:orientation="horizontal"
-        android:text="Sosi button" />
+        android:text="@string/reset" />
 
     <com.example.sandboxapp.GameView
         android:id="@+id/game"
-        android:layout_width="385dp"
-        android:layout_height="680dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/reset_button"
+        android:layout_marginBottom="3dp"
+        android:background="#FEDA9C"
+        android:paddingBottom="40dp" />
+
+    <ProgressBar
+        app2:id="@+id/progressBar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/game"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginEnd="26dp"
-        android:layout_marginRight="26dp"
-        android:layout_marginBottom="3dp"
-        android:background="#ccc"
-        android:paddingBottom="40dp" />
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="-33dp"
+        android:layout_toEndOf="@+id/reset_button"
+        android:layout_toRightOf="@+id/reset_button"
+        android:maxWidth="77dip"
+        android:minWidth="70dip"
+        android:scaleY="2"
+        android:scrollbarSize="10dip" />
+
+    <Switch
+        app2:id="@+id/pause_play_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pause" />
 
 </RelativeLayout>

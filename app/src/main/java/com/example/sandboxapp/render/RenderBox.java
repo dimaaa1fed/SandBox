@@ -9,25 +9,27 @@ import com.example.sandboxapp.physics.GeomBox;
 public class RenderBox {
     private GeomBox m_geom;
     private int     m_color;
+    private Paint m_yellowPaint;
+
+
 
     public RenderBox(GeomBox geom, int color)
     {
         m_geom = geom;
         m_color = color;
+
+        m_yellowPaint = new Paint();
+        m_yellowPaint.setColor(m_color);
+        m_yellowPaint.setStyle(Paint.Style.FILL);
     }
 
     public void Draw (Canvas canvas, double rotAngle) {
         Rect rect = GetRect(canvas, rotAngle);
 
-        Paint yellowPaint = new Paint();
-        yellowPaint.setColor(m_color);
-        yellowPaint.setStyle(Paint.Style.FILL);
-
-
         canvas.translate(canvas.getWidth() / 2, canvas.getWidth() / 2);
         canvas.rotate((float) rotAngle);
 
-        canvas.drawRect(rect, yellowPaint);
+        canvas.drawRect(rect, m_yellowPaint);
 
         canvas.rotate((float) -rotAngle);
         canvas.translate(-canvas.getWidth() / 2, -canvas.getWidth() / 2);

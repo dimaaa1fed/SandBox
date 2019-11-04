@@ -114,7 +114,7 @@ public class Mainfold {
         PhysBox a = m_a;
         PhysBox b = m_b;
 
-        double percent = 0.5;
+        double percent = 0.2;
         double slop = 0.005;
         double m = Math.max(this.m_penetration - slop, 0.0) / (a.m_imass + b.m_imass);
 
