@@ -4,6 +4,8 @@ import com.example.sandboxapp.game.PhysicEngine;
 import com.example.sandboxapp.physics.GeomBox;
 import com.example.sandboxapp.math.Vec2d;
 
+import static java.lang.Math.random;
+
 public class PhysBox extends GeomBox {
     public static double   INFINITE_MASS = 0;
 
@@ -20,16 +22,21 @@ public class PhysBox extends GeomBox {
     public Type m_type;
 
     //TODO: change coeff
-    public double restitution = 0.2;
+    public double restitution = 0.0;
 
-    public double staticFriction = 1;
-    public double dynamicFriction = 0.3;
+    public double staticFriction = 0;
+    public double dynamicFriction = 0;
 
     public PhysBox(Vec2d m_min, Vec2d m_max, double m_imass, Type type) {
         super(m_min, m_max);
+
+
         this.m_velocity = new Vec2d(0, 0);
         this.m_force = new Vec2d(0, 0);
-        this.m_imass = m_imass;
+        if (type == Type.SAND) {
+            this.m_imass = m_imass * (0.6 + random() * 0.4);
+            staticFriction = 0;
+        }
         this.m_type = type;
     }
 

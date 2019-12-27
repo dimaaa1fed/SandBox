@@ -21,8 +21,12 @@ public class Mainfold {
     }
 
     public void Init (Vec2d gravity, double epsilon) {
-        m_sf = Math.sqrt(m_a.staticFriction * m_b.staticFriction);
-        m_df = Math.sqrt(m_a.dynamicFriction * m_b.dynamicFriction);
+        m_sf = Math.sqrt(!(m_a.m_type == PhysBox.Type.SAND && m_b.m_type == PhysBox.Type.SAND)
+                         ? 0.7 :
+                         m_a.staticFriction * m_b.staticFriction);
+        m_df = Math.sqrt(!(m_a.m_type == PhysBox.Type.SAND && m_b.m_type == PhysBox.Type.SAND)
+                         ? 2 :
+                         m_a.staticFriction * m_b.staticFriction);
 
         double rx = m_b.m_velocity.x - m_a.m_velocity.x;
         double ry = m_b.m_velocity.y - m_a.m_velocity.y;

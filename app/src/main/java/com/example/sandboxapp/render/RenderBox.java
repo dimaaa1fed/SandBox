@@ -24,7 +24,7 @@ public class RenderBox {
     }
 
     public void Draw (Canvas canvas, double rotAngle) {
-        Rect rect = GetRect(canvas, rotAngle);
+        Rect rect = GetRect(canvas);
 
         canvas.translate(canvas.getWidth() / 2, canvas.getWidth() / 2);
         canvas.rotate((float) rotAngle);
@@ -36,7 +36,7 @@ public class RenderBox {
     }
 
 
-    private Rect GetRect(Canvas canvas, double rotAngle) {
+    public Rect GetRect(Canvas canvas) {
         Rect rect = new Rect();
 
         /*
