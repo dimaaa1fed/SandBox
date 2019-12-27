@@ -26,10 +26,10 @@ public class Intersection {
         Vec2d side3 = p4.getSubtracted(p3);
         Vec2d side4 = p1.getSubtracted(p4);
 
-        Vec2d from1 = a.getCenter().getSubtracted(p1);
-        Vec2d from2 = a.getCenter().getSubtracted(p2);
-        Vec2d from3 = a.getCenter().getSubtracted(p3);
-        Vec2d from4 = a.getCenter().getSubtracted(p4);
+        Vec2d from1 = a.getCCenter().getSubtracted(p1);
+        Vec2d from2 = a.getCCenter().getSubtracted(p2);
+        Vec2d from3 = a.getCCenter().getSubtracted(p3);
+        Vec2d from4 = a.getCCenter().getSubtracted(p4);
 
         if (from1.dot(side1) >= 0 && from2.dot(side2) >= 0 && from3.dot(side3) >= 0 && from4.dot(side4) >= 0)
             return true;
@@ -38,7 +38,7 @@ public class Intersection {
 
     public static boolean GeomBoxOutOfWorld(GeomBox a, Bucket b)
     {
-        double length = a.getCenter().getLength();
+        double length = a.getCCenter().getLength();
         return length > b.GetCenter().getLength() * 2.28;
     }
 }

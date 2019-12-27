@@ -22,11 +22,19 @@ public class PhysBox extends GeomBox {
     //TODO: change coeff
     public double restitution = 0.2;
 
-    public double staticFriction = 1;
+    public double staticFriction = 0.1;
     public double dynamicFriction = 0.3;
 
     public PhysBox(Vec2d m_min, Vec2d m_max, double m_imass, Type type) {
         super(m_min, m_max);
+
+        if (type == Type.SAND) {
+            Vec2d min = getCenter();
+            Vec2d r = new Vec2d(getWidth(), 0);
+            this.m_min = min;
+            this.m_max = r;
+        }
+
         this.m_velocity = new Vec2d(0, 0);
         this.m_force = new Vec2d(0, 0);
         this.m_imass = m_imass;
@@ -45,9 +53,10 @@ public class PhysBox extends GeomBox {
             m_min.x += m_velocity.x * dt;
             m_min.y += m_velocity.y * dt;
 
-            m_max.x += m_velocity.x * dt;
-            m_max.y += m_velocity.y * dt;
-
+            if (m_type != Type.SAND) {
+                m_max.x += m_velocity.x * dt;
+                m_max.y += m_velocity.y * dt;
+            }
             IntegrateForces(gravity, dt);
         }
     }

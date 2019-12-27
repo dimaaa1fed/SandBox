@@ -13,6 +13,8 @@ public class Mainfold {
     Vec2d    m_normal = new Vec2d(0, 0);
     double   m_penetration = 0;
 
+    public int type = 1;
+
     public Mainfold (PhysBox a, PhysBox b) {
         m_a = a;
         m_b = b;
@@ -122,16 +124,19 @@ public class Mainfold {
         double cy = m * m_normal.y * percent;
 
         a.m_min.x -= cx * a.m_imass;
-        a.m_max.x -= cx * a.m_imass;
-
-        a.m_min.y -= cy * a.m_imass;
-        a.m_max.y -= cy * a.m_imass;
-
         b.m_min.x += cx * b.m_imass;
-        b.m_max.x += cx * b.m_imass;
-
         b.m_min.y += cy * b.m_imass;
-        b.m_max.y += cy * b.m_imass;
+
+        if (a.m_type != PhysBox.Type.SAND)
+        {
+            a.m_max.x -= cx * a.m_imass;
+            a.m_max.y -= cy * a.m_imass;
+        }
+        if (b.m_type != PhysBox.Type.SAND)
+        {
+            b.m_max.x += cx * b.m_imass;
+            b.m_max.y += cy * b.m_imass;
+        }
     }
 
 }

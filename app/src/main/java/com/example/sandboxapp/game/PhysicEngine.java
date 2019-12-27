@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.sandboxapp.game_objects.SandParticle;
 import com.example.sandboxapp.math.Vec2d;
+import com.example.sandboxapp.physics.CircleBoxMainfold;
 import com.example.sandboxapp.physics.GeomBox;
 import com.example.sandboxapp.physics.Intersection;
 import com.example.sandboxapp.physics.Mainfold;
@@ -18,7 +19,7 @@ public class PhysicEngine {
     private ArrayList<PhysBox> m_objs = new ArrayList<>();
     private ArrayList<Mainfold> m_contacts = new ArrayList<>();
 
-    private Vec2d m_gravity = new Vec2d(0, -0.5);
+    private Vec2d m_gravity = new Vec2d(0, -0.7);
 
     private double EPSILON = 0.0001;
 
@@ -52,7 +53,8 @@ public class PhysicEngine {
             if (m_objs.get(i).m_type == PhysBox.Type.SAND && !Intersection.GeomBoxVsGeomBox(m_gameBox, m_objs.get(i))){
                 Vec2d center = m_objs.get(i).getCenter();
                 center.rotateBy(m_prevAngle - this.m_rotAngle);
-                m_objs.get(i).setCenter(center);
+
+                m_objs.get(i).setCCenter(center);
 
                 m_objs.get(i).m_velocity.rotateBy(m_prevAngle - this.m_rotAngle);
             }
@@ -97,8 +99,12 @@ public class PhysicEngine {
 
                 if (a.m_imass == PhysBox.INFINITE_MASS && b.m_imass == PhysBox.INFINITE_MASS) {
                     continue;
-                } else if (Intersection.GeomBoxVsGeomBox(a, b)) {
-                    Mainfold mainfold = new Mainfold(a, b);
+                } else {
+                    Mainfold mainfold;
+                    if (a.m_type == PhysBox.Type.SAND || b.m_type == PhysBox.Type.SAND)
+                        mainfold = new CircleBoxMainfold(a, b);
+                    else
+                        continue;;//mainfold = new Mainfold(a, b);
                     if (mainfold.Solve()) {
                         m_contacts.add(mainfold);
                     }

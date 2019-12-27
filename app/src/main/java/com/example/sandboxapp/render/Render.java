@@ -7,8 +7,6 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import com.example.sandboxapp.MainActivity;
 import com.example.sandboxapp.R;
@@ -17,17 +15,17 @@ import com.example.sandboxapp.game_objects.Bucket;
 import com.example.sandboxapp.game_objects.Sand;
 import com.example.sandboxapp.game_objects.StaticRect;
 import com.example.sandboxapp.math.Vec2d;
-import com.example.sandboxapp.physics.GeomBox;
-import com.example.sandboxapp.physics.Intersection;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Render {
+    private Bitmap m_bucketTextureSrc;
+    private Bitmap m_wallTextureSrc;
+    private Paint m_textPaint;
+    private Paint m_yellowPaint;
+
 
     private MainActivity m_app;
-    private Bitmap       m_bucketTextureSrc;
-    private Bitmap       m_bucketTexture;
 
     public Render () {
 
@@ -37,6 +35,13 @@ public class Render {
     public void Init (MainActivity app) {
         m_app = app;
         m_bucketTextureSrc = BitmapFactory.decodeResource(app.getResources(), R.drawable.bucket_texture);
+        m_wallTextureSrc = BitmapFactory.decodeResource(app.getResources(), R.drawable.plywood);
+        m_textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        m_textPaint.setFilterBitmap(true);
+
+        m_yellowPaint = new Paint();
+        m_yellowPaint.setColor(Color.YELLOW);
+        m_yellowPaint.setStyle(Paint.Style.FILL);
     }
 
 
@@ -46,47 +51,70 @@ public class Render {
         /* draw game objects */
         // draw box
 
+        // draw bucket
+        DrawTextRectScaled(canvas, m_bucketTextureSrc,
+                           GetBucketRect(canvas, rotAngle, scene.GetBucket()),
+                           0, new Vec2d(1.15, 1.15));
+
         // draw sand
         Sand sand = scene.GetSand();
-
         for (int i = 0; i < sand.Size(); i++) {
-            sand.At(i).GetRenderBox().Draw(canvas, rotAngle);
+            Rect rect = sand.At(i).GetRenderBox().GetRect(canvas);
+            DrawColoredRect(canvas, m_yellowPaint, rect, rotAngle);
         }
 
         // draw walls
         ArrayList<StaticRect> walls = scene.GetWalls();
         for (int i = 0; i < walls.size(); i++) {
-            walls.get(i).GetRenderBox().Draw(canvas, rotAngle);
+            Rect rect = walls.get(i).GetRenderBox().GetRect(canvas);
+            DrawTextRect(canvas, m_wallTextureSrc, rect, rotAngle);
         }
-
-        DrawBucket(canvas, rotAngle, scene.GetBucket());
     }
 
-
-    public void DrawBucket (Canvas canvas, double rotAngle, Bucket bucket) {
-        Matrix matrix = new Matrix();
-        Rect dest = GetBucketRect(canvas, rotAngle, bucket);
-        //matrix.postTranslate(100, 0);
-
-        matrix.postScale((float)(dest.right - dest.left) / m_bucketTextureSrc.getWidth(),
-                (float)(dest.top - dest.bottom) / m_bucketTextureSrc.getHeight());
-        //matrix.postScale(0.1f, 0.1f);
-        m_bucketTexture = Bitmap.createBitmap(m_bucketTextureSrc, 0, 0,
-                m_bucketTextureSrc.getWidth(), m_bucketTextureSrc.getHeight(), matrix, true);
-
-        //Rect dest = new Rect(0, 0, canvas.getWidth(), canvas.getHeight());
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setFilterBitmap(true);
-
+    private void DrawColoredRect(Canvas canvas, Paint paint, Rect dest, double rotAngle) {
         canvas.translate(canvas.getWidth() / 2, canvas.getWidth() / 2);
-        canvas.translate(dest.left, dest.bottom);
+        canvas.rotate((float) rotAngle);
 
-        canvas.drawBitmap(m_bucketTexture, 0, 0, paint);
+        canvas.drawRect(dest, paint);
 
-        canvas.translate(-dest.left, -dest.bottom);
+        canvas.rotate((float) -rotAngle);
         canvas.translate(-canvas.getWidth() / 2, -canvas.getWidth() / 2);
     }
 
+    private void DrawTextRect(Canvas canvas, Bitmap rectTextureSrc, Rect dest, double rotAngle)
+    {
+        DrawTextRectScaled(canvas, rectTextureSrc, dest, rotAngle, new Vec2d(1, 1));
+    }
+
+    private void DrawTextRectScaled(Canvas canvas, Bitmap rectTextureSrc,
+                                    Rect dest, double rotAngle, Vec2d scale)
+    {
+        Matrix matrix = new Matrix();
+        //matrix.postTranslate(100, 0);
+        float dx_scale = (float)scale.x, dy_scale = (float)scale.y;
+        float delta_x_move = (float)(dest.right - dest.left) / rectTextureSrc.getWidth();
+        float delta_y_move = (float)(dest.top - dest.bottom) / rectTextureSrc.getHeight();
+
+        matrix.postScale(delta_x_move * dx_scale, delta_y_move * dy_scale);
+        Bitmap texture = Bitmap.createBitmap(rectTextureSrc, 0, 0,
+                rectTextureSrc.getWidth(), rectTextureSrc.getHeight(), matrix, true);
+
+        canvas.translate(canvas.getWidth() / 2, canvas.getWidth() / 2);
+
+        canvas.rotate((float) rotAngle);
+
+        float translate_x = dest.left - delta_x_move * (dx_scale - 1) * rectTextureSrc.getWidth(),
+                translate_y = dest.bottom - delta_y_move * (dy_scale - 1) * rectTextureSrc.getHeight();
+
+        canvas.translate(translate_x, translate_y);
+
+        canvas.drawBitmap(texture, 0, 0, m_textPaint);
+
+        canvas.translate(-translate_x, -translate_y);
+
+        canvas.rotate((float) -rotAngle);
+        canvas.translate(-canvas.getWidth() / 2, -canvas.getWidth() / 2);
+    }
 
     private Rect GetBucketRect (Canvas canvas, double rotAngle, Bucket bucket) {
         Rect rect = new Rect();

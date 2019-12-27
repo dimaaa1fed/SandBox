@@ -13,7 +13,7 @@ public class BoxObj {
     public BoxObj (Vec2d min, Vec2d max, double mass, PhysBox.Type type)
     {
         m_physBox = new PhysBox(min, max, mass, type);
-        m_renderBox = new RenderBox(m_physBox, Color.BLACK);
+        m_renderBox = new RenderBox(m_physBox.m_min, m_physBox.m_max, type == PhysBox.Type.SAND ? 2 : 1);
     }
 
     public BoxObj (Vec2d center, double w, double h, double mass, PhysBox.Type type)
@@ -22,11 +22,11 @@ public class BoxObj {
         Vec2d max = new Vec2d(center.x + w / 2, center.y + h / 2);
 
         m_physBox = new PhysBox(min, max, mass, type);
-        m_renderBox = new RenderBox(m_physBox, Color.BLACK);
+        m_renderBox = new RenderBox(m_physBox.m_min, m_physBox.m_max, type == PhysBox.Type.SAND ? 2 : 1);
     }
 
-    public void SetRenderBox (RenderBox rb) {
-        m_renderBox = rb;
+    public void SetRenderBox () {
+        m_renderBox = new RenderBox(m_physBox.m_min, m_physBox.m_max, m_physBox.m_type == PhysBox.Type.SAND ? 2 : 1);
     }
 
     public RenderBox GetRenderBox () {
