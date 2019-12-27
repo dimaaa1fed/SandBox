@@ -34,7 +34,7 @@ public class GameScene {
             m_physEngine.AddPhysBox( m_walls.get(i).GetPhysBox());
         }
 
-        m_sand = SandGenerator.Generate(desc.m_leftBottomSand, desc.m_rightTopSand, 3);
+        m_sand = SandGenerator.Generate(desc.m_leftBottomSand, desc.m_rightTopSand, 100);
         for (int i = 0; i < m_sand.Size(); i++) {
             m_sand.At(i).SetRenderBox();
             m_physEngine.AddPhysBox( m_sand.At(i).GetPhysBox());

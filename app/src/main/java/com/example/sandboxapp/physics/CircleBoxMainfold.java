@@ -35,7 +35,35 @@ public class CircleBoxMainfold extends Mainfold {
             return true;
         }
         else {
-            Vec2d a_c = m_a.getMin();
+            double nx = (m_a.getCCenter().x - m_b.getCenter().x);
+            double ny = (m_a.getCCenter().y - m_b.getCenter().y);
+
+            double aex = m_a.getMax().x;
+            double bex = m_b.getWidth() / 2;
+
+            double xoverlap = aex + bex - Math.abs(nx);
+            if (xoverlap > 0) {
+                double aey = m_a.getMax().x;
+                double bey = m_b.getHeight() / 2;
+
+                double yoverlap = aey + bey - Math.abs(ny);
+
+                if (yoverlap > 0) {
+                    if (xoverlap < yoverlap) {
+                        m_normal.x = nx < 0 ? 1 : -1;
+                        m_normal.y = 0;
+                        m_penetration = xoverlap;
+                        return true;
+                    } else {
+                        m_normal.x = 0;
+                        m_normal.y = ny < 0 ? 1 : -1;
+                        m_penetration = yoverlap;
+                        return true;
+                    }
+                }
+            }
+            return false;
+            /*Vec2d a_c = m_a.getMin();
             double a_r = m_a.getMax().x;
             Vec2d b_min = m_b.getMin(), b_max = m_b.getMax();
             Vec2d left_up = m_b.getLeftUp(), right_up = m_b.getRightUp(),
@@ -99,7 +127,7 @@ public class CircleBoxMainfold extends Mainfold {
                 System.exit(-1);
             }
             m_normal.multiply(-1);
-            return true;
+            return true;*/
         }
     }
 

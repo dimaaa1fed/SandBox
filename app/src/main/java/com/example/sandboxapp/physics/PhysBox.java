@@ -30,7 +30,7 @@ public class PhysBox extends GeomBox {
 
         if (type == Type.SAND) {
             Vec2d min = getCenter();
-            Vec2d r = new Vec2d(getWidth(), 0);
+            Vec2d r = new Vec2d(getHeight() / 2, 0);
             this.m_min = min;
             this.m_max = r;
         }
