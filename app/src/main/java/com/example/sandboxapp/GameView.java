@@ -107,8 +107,10 @@ public class GameView extends View {
 
     }
     Thread t;
-    public void start()
+    Handler h_;
+    public void start(Handler h)
     {
+        h_ = h;
         m_active 	= true;
         t = new Thread(new Runnable() {
             public void run() {
@@ -117,6 +119,7 @@ public class GameView extends View {
                         ;
                     try {
                         update();
+                        h_.sendEmptyMessage(0);
                     } finally {
                         lock.unlock();
                     }
@@ -190,7 +193,6 @@ public class GameView extends View {
     {
         if (m_active) {
             m_engine.Update();
-            invalidate();
         }
     }
 

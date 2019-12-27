@@ -34,7 +34,7 @@ public class PhysBox extends GeomBox {
         this.m_velocity = new Vec2d(0, 0);
         this.m_force = new Vec2d(0, 0);
         if (type == Type.SAND) {
-            this.m_imass = m_imass * (0.6 + random() * 0.4);
+            this.m_imass = m_imass * (0.7 + random() * 0.3);
             staticFriction = 0;
         }
         this.m_type = type;

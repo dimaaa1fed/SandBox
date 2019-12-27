@@ -22,7 +22,7 @@ public class Render {
     private Bitmap m_bucketTextureSrc;
     private Bitmap m_wallTextureSrc;
     private Paint m_textPaint;
-    private Paint m_yellowPaint;
+    private Bitmap m_sandTextureSrc;
 
 
     private MainActivity m_app;
@@ -39,9 +39,7 @@ public class Render {
         m_textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         m_textPaint.setFilterBitmap(true);
 
-        m_yellowPaint = new Paint();
-        m_yellowPaint.setColor(Color.YELLOW);
-        m_yellowPaint.setStyle(Paint.Style.FILL);
+        m_sandTextureSrc = BitmapFactory.decodeResource(app.getResources(), R.drawable.sand);
     }
 
 
@@ -60,7 +58,7 @@ public class Render {
         Sand sand = scene.GetSand();
         for (int i = 0; i < sand.Size(); i++) {
             Rect rect = sand.At(i).GetRenderBox().GetRect(canvas);
-            DrawColoredRect(canvas, m_yellowPaint, rect, rotAngle);
+            DrawTextRect(canvas, m_sandTextureSrc, rect, rotAngle);
         }
 
         // draw walls

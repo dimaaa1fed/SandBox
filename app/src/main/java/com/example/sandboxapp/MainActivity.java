@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.*;
@@ -50,6 +51,8 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
     // screen dim
     int						m_screenW;
     int						m_screenH;
+
+    Handler h_;
 
 
     // *************************************************
@@ -161,7 +164,13 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
                     (Button) findViewById(R.id.next_level),
                     this
             );
-            m_viewGame.start();
+            h_ = new Handler() {
+                public void handleMessage(android.os.Message msg) {
+                    // обновляем TextView
+                    m_viewGame.invalidate();
+                };
+            };
+            m_viewGame.start(h_);
         }
     }
 
@@ -227,7 +236,15 @@ public class MainActivity extends Activity implements  OnCompletionListener, Vie
         if (m_viewCur == VIEW_INTRO)
             m_viewIntro.start();
         if (m_viewCur == VIEW_GAME)
-            m_viewGame.start();
+        {
+            h_ = new Handler() {
+                public void handleMessage(android.os.Message msg) {
+                    // обновляем TextView
+                    m_viewGame.invalidate();
+                }
+            };
+            m_viewGame.start(h_);
+        }
         //Log.d("THREE", "App onResume");
     }
     protected void onPause()
